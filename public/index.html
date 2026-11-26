@@ -239,26 +239,25 @@ nav.tabs{animation:navIn 280ms var(--ease-out)}
 nav.tabs button svg{transition:transform 140ms var(--ease-out)}
 nav.tabs button:active svg{transform:scale(.88)}
 
-/* bottom bar: floating glass pill with a notch for the main action */
-nav.tabs{position:fixed;inset-inline:0;margin-inline:auto;bottom:calc(10px + env(safe-area-inset-bottom,0px));width:min(calc(100% - 24px),480px);z-index:10}
-nav.tabs::before{content:"";position:absolute;inset:0;border-radius:30px;background:color-mix(in srgb,var(--card) 72%,transparent);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);border:1.5px solid color-mix(in srgb,var(--ink) 16%,transparent);box-shadow:0 14px 34px -14px rgba(23,26,58,.45),0 0 26px var(--glow),inset 0 1px 0 rgba(255,255,255,.4);-webkit-mask:radial-gradient(circle 38px at 50% -4px,transparent 97%,#000 100%);mask:radial-gradient(circle 38px at 50% -4px,transparent 97%,#000 100%)}
+/* bottom bar: floating glass pill; the active tab lifts into a bubble that slides and pushes the notch (liquid feel) */
+@property --nx{syntax:'<percentage>';inherits:true;initial-value:90%}
+nav.tabs{--nx:90%;position:fixed;inset-inline:0;margin-inline:auto;bottom:calc(10px + env(safe-area-inset-bottom,0px));width:min(calc(100% - 24px),480px);z-index:10;transition:--nx 560ms linear(0.000, 0.037, 0.129, 0.253, 0.392, 0.531, 0.661, 0.775, 0.871, 0.947, 1.003, 1.043, 1.068, 1.080, 1.084, 1.080, 1.072, 1.062, 1.050, 1.038, 1.028, 1.018, 1.010, 1.004, 0.999, 0.996, 0.994, 0.993, 0.993, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 0.999, 1.000, 1.000, 1.000, 1),transform 320ms var(--ease-out),opacity 320ms var(--ease-out)}
+nav.tabs::before{content:"";position:absolute;inset:0;border-radius:30px;background:color-mix(in srgb,var(--card) 72%,transparent);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);border:1.5px solid color-mix(in srgb,var(--ink) 16%,transparent);box-shadow:0 14px 34px -14px rgba(23,26,58,.45),0 0 26px var(--glow),inset 0 1px 0 rgba(255,255,255,.4);-webkit-mask:radial-gradient(circle 37px at var(--nx) -6px,transparent 96%,#000 100%);mask:radial-gradient(circle 37px at var(--nx) -6px,transparent 96%,#000 100%)}
 nav.tabs .in{position:relative;display:grid;grid-template-columns:repeat(5,1fr);height:64px}
 nav.tabs button{position:relative;z-index:1;border:0;background:none;display:grid;place-items:center;color:var(--mute);cursor:pointer;border-radius:22px;min-height:64px}
-nav.tabs button svg{width:25px;height:25px;transition:transform 140ms var(--ease-out),color 200ms ease}
-nav.tabs button:active svg{transform:scale(.88)}
-nav.tabs button[aria-selected=true]{color:var(--cobi)}
-nav.tabs .ind{position:absolute;top:0;bottom:0;right:0;width:20%;pointer-events:none;transition:transform 260ms var(--ease-in-out),opacity 160ms ease}
-nav.tabs .ind::before{content:"";position:absolute;top:50%;left:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:color-mix(in srgb,var(--cobi) 14%,transparent);box-shadow:0 0 18px color-mix(in srgb,var(--cobi) 22%,transparent)}
-nav.tabs .ind.hide{opacity:0}
-nav.tabs .fab{align-self:start}
-nav.tabs .fabc{position:absolute;left:50%;top:-26px;width:58px;height:58px;margin-left:-29px;border-radius:50%;display:grid;place-items:center;background:var(--cob);color:#fff;box-shadow:0 8px 18px -6px rgba(43,59,255,.6),0 0 22px var(--glow);transition:transform 140ms var(--ease-out),box-shadow 200ms ease}
-nav.tabs .fab:active .fabc{transform:scale(.94)}
-nav.tabs .fab svg{width:26px;height:26px}
-nav.tabs .fab[aria-selected=true]{color:#fff}
-nav.tabs .fab[aria-selected=true] .fabc{box-shadow:0 0 0 4px color-mix(in srgb,var(--chem) 85%,transparent),0 8px 18px -6px rgba(43,59,255,.6),0 0 26px var(--glow)}
-/* dark green noise over the whole site */
-html::after{content:"";position:fixed;inset:0;z-index:300;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22180%22%20height%3D%22180%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22/%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.05%20%200%200%200%200%20.24%20%200%200%200%200%20.15%20%200%200%200%201.4%20-.35%22/%3E%3C/filter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22/%3E%3C/svg%3E");opacity:.1}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light])::after{opacity:.16}}:root[data-theme=dark]::after{opacity:.16}
+nav.tabs button svg{width:25px;height:25px;transition:transform 520ms linear(0.000, 0.037, 0.129, 0.253, 0.392, 0.531, 0.661, 0.775, 0.871, 0.947, 1.003, 1.043, 1.068, 1.080, 1.084, 1.080, 1.072, 1.062, 1.050, 1.038, 1.028, 1.018, 1.010, 1.004, 0.999, 0.996, 0.994, 0.993, 0.993, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 0.999, 1.000, 1.000, 1.000, 1),color 220ms ease}
+nav.tabs button[aria-selected=true]{color:#fff}
+nav.tabs button[aria-selected=true] svg{transform:translateY(-27px)}
+nav.tabs button:active svg{scale:.9}
+nav.tabs .ind{position:absolute;top:0;bottom:0;right:0;width:20%;pointer-events:none;transition:transform 560ms linear(0.000, 0.037, 0.129, 0.253, 0.392, 0.531, 0.661, 0.775, 0.871, 0.947, 1.003, 1.043, 1.068, 1.080, 1.084, 1.080, 1.072, 1.062, 1.050, 1.038, 1.028, 1.018, 1.010, 1.004, 0.999, 0.996, 0.994, 0.993, 0.993, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 0.999, 1.000, 1.000, 1.000, 1)}
+nav.tabs .ind i{position:absolute;left:50%;top:-27px;width:56px;height:56px;margin-left:-28px;border-radius:50%;background:var(--cob);box-shadow:0 8px 18px -6px rgba(43,59,255,.6),0 0 22px var(--glow),inset 0 1px 0 rgba(255,255,255,.35)}
+nav.tabs.min{transform:translateY(6px) scale(.94);opacity:.92}
+/* scrolling: content rises into place as it enters the screen */
+html{scroll-behavior:smooth}
+@supports (animation-timeline:view()){
+  .tile,.track,.freq,.law,.board li,.panel,.goal,.stat,.laws-btn,.rev{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}
+@keyframes rise{from{opacity:0;transform:translateY(22px) scale(.97)}}
 /* very subtle glow on main surfaces */
 .track,.tile,.qcard,.panel,.freq,.laws-btn,.mycoins,.law,.cta:not(:disabled){filter:drop-shadow(0 0 12px var(--glow))}
 /* press feedback on round icon buttons */
@@ -388,10 +387,10 @@ html::after{content:"";position:fixed;inset:0;z-index:300;pointer-events:none;ba
 <small>رقمك ما يطلع لأحد. نستخدمه بس عشان نرجّع لك حسابك لو غيّرت جهازك (سجّل بنفس الاسم والرقم).</small></form></div>
 <div class="toast" id="toast"></div>
 
-<nav class="tabs" aria-label="التنقل"><div class="in" role="tablist"><span class="ind" id="tabInd" aria-hidden="true"></span>
+<nav class="tabs" aria-label="التنقل"><div class="in" role="tablist"><span class="ind" id="tabInd" aria-hidden="true"><i></i></span>
+  <button role="tab" data-v="home" aria-selected="true" aria-label="تدرّب" title="تدرّب"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 20l1-5L16 4l4 4L9 19z"/><path d="M14 6l4 4"/></svg><span class="sr">تدرّب</span></button>
   <button role="tab" data-v="test" aria-selected="false" aria-label="اختبار محاكي" title="اختبار محاكي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg><span class="sr">اختبار محاكي</span></button>
   <button role="tab" data-v="coach" aria-selected="false" aria-label="المدرّب" title="المدرّب"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8"/></svg><span class="sr">المدرّب</span></button>
-  <button role="tab" data-v="home" aria-selected="true" aria-label="تدرّب" title="تدرّب" class="fab"><span class="fabc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 20l1-5L16 4l4 4L9 19z"/><path d="M14 6l4 4"/></svg></span><span class="sr">تدرّب</span></button>
   <button role="tab" data-v="prog" aria-selected="false" aria-label="تقدّمي" title="تقدّمي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V11M12 20V5M19 20v-6"/></svg><span class="sr">تقدّمي</span></button>
   <button role="tab" data-v="rank" aria-selected="false" aria-label="الترتيب" title="الترتيب"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg><span class="sr">الترتيب</span></button>
 </div></nav>
@@ -428,9 +427,14 @@ function record(i,ok,bonus){st.n=(st.n||0)+1;st.r[i]=ok?1:0;st.xp+=ok?10+bonus:0
 // ---------- nav
 let prevV='start',curV='start';
 const TABS=[...document.querySelectorAll('nav.tabs button')].map(b=>b.dataset.v);
+const RM=matchMedia('(prefers-reduced-motion: reduce)');
+function moveTab(b,a){const nav=document.querySelector('nav.tabs'),ind=$('tabInd');
+  ind.style.transform=`translateX(${-b*100}%)`;nav.style.setProperty('--nx',(100-(b+.5)*20)+'%');
+  if(a>-1&&a!==b&&!RM.matches&&ind.firstChild.animate){const far=Math.min(Math.abs(b-a),3);
+    ind.firstChild.animate([{transform:'scale(1,1)'},{transform:`scale(${1+.14*far},${1-.08*far})`,offset:.35},{transform:'scale(.96,1.04)',offset:.7},{transform:'scale(1,1)'}],{duration:560,easing:'ease-in-out'})}}
 function show(v){const from=curV;if(v!==curV){prevV=curV;curV=v}
   const el=$('v-'+v),a=TABS.indexOf(from),b=TABS.indexOf(v);if(el){el.classList.remove('from-s','from-e');if(a>-1&&b>-1&&a!==b)el.classList.add(b>a?'from-e':'from-s')}
-  if(b>-1){const ind=$('tabInd');ind.style.transform=`translateX(${-b*100}%)`;ind.classList.toggle('hide',v==='home')}document.body.classList.toggle('onstart',['start','qud','laws','rank'].includes(v));if(v==='rank')drawRank();if(v==='laws')drawLaws();if(v==='start')drawHome();document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
+  if(b>-1)moveTab(b,a);document.body.classList.toggle('onstart',['start','qud','laws','rank'].includes(v));if(v==='rank')drawRank();if(v==='laws')drawLaws();if(v==='start')drawHome();document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
   document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.v===v));
   document.body.classList.toggle('inround',v==='round'||(v==='test'&&T.on));window.scrollTo(0,0);
   if(v==='home')drawHome();if(v==='prog')drawProg();if(v==='test'&&!T.on)drawTestStart()}
@@ -660,6 +664,9 @@ if(inClaude){Promise.all([claude.use('db'),claude.use('user')]).then(async([d,u]
   if(me){try{const mine=await db.doc('lb/'+me).get();if(mine.exists){const m=mine.data();if((Number(m.coins)||0)>st.xp){st.xp=Number(m.coins)||0;save();drawHome()}if(m.nick&&!st.nick){st.nick=String(m.nick);save()}}}catch(e){}
   queueSync()}
   if(curV==='rank')drawRank()}).catch(()=>{})}
+
+// ---------- bar reacts to scrolling
+(()=>{let y=scrollY,t=0;addEventListener('scroll',()=>{if(t)return;t=requestAnimationFrame(()=>{t=0;const d=scrollY-y;if(Math.abs(d)>6){document.querySelector('nav.tabs').classList.toggle('min',d>0&&scrollY>40);y=scrollY}})},{passive:true})})();
 
 // ---------- splash
 (()=>{const sp=$('splash'),h=document.documentElement;if(!h.classList.contains('splash-on'))return;
