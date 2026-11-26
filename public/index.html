@@ -7,7 +7,10 @@
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fffaee">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#12142b">
 <title>موجزي · مدرّب القدرات والتحصيلي</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%22640%20196%20380%20380%22%3E%3Cpolygon%20points%3D%22933.8%2C279.9%20947.1%2C326.4%20995.1%2C332.3%20954.9%2C359.3%20964.1%2C406.8%20926.0%2C377.0%20883.7%2C400.3%20900.3%2C354.9%20865.0%2C321.9%20913.3%2C323.6%22%20fill%3D%22%23FF4D6D%22%20stroke%3D%22%23171a3a%22%20stroke-width%3D%225%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22838.3%2C247.2%20865.4%2C319.4%20942.5%2C322.7%20882.2%2C370.8%20903.0%2C445.1%20838.5%2C402.6%20774.3%2C445.3%20794.8%2C371.0%20734.3%2C323.0%20811.4%2C319.5%22%20fill%3D%22%235B8CFF%22%20stroke%3D%22%23171a3a%22%20stroke-width%3D%225%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22793.6%2C279.4%20833.7%2C374.3%20936.8%2C374.4%20859.0%2C441.9%20890.7%2C540.0%20802.4%2C486.8%20719.0%2C547.3%20742.2%2C446.9%20658.9%2C386.2%20761.6%2C377.4%22%20fill%3D%22%23FFD23F%22%20stroke%3D%22%23171a3a%22%20stroke-width%3D%225%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>try{if(!sessionStorage.getItem("mzs")){document.documentElement.classList.add("splash-on");sessionStorage.setItem("mzs","1")}}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,7 +21,7 @@
    COLOUR and TYPE: indigo ink on white graph paper, cobalt for action, four highlighter colours (one per subject); Thmanyah Sans (outlined to vector, per its license) for titles; Readex Pro for reading and numbers.
    LAYOUT: one phone column ≤640px, bottom tab bar, feedback panel inside the question card. */
 :root{color-scheme:light dark;
---bg:light-dark(#fffaee,#12142b);--grid:light-dark(#f2ead6,#1b1f40);--ink:light-dark(#171a3a,#f6f0e0);--mute:light-dark(#585c7e,#9aa0c8);--line:light-dark(#e8dfc8,#2a2f5a);--card:light-dark(#fffdf6,#181b38);--glow:light-dark(rgba(232,170,20,.16),rgba(150,165,255,.16));
+--bg:light-dark(#fffaee,#12142b);--grid:light-dark(#f2ead6,#1b1f40);--ink:light-dark(#171a3a,#f6f0e0);--mute:light-dark(#585c7e,#9aa0c8);--line:light-dark(#e8dfc8,#2a2f5a);--card:light-dark(#fffdf6,#181b38);--glow:light-dark(rgba(232,170,20,.26),rgba(150,165,255,.26));
 --cob:#2b3bff;--cobi:light-dark(#2b3bff,#7d88ff);
 --ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1);--bio:#3be8b0;--chem:#ffe45c;--phys:#5cc8ff;--math:#ff7ab3;--ok:#3be8b0;--sh:light-dark(#171a3a,#05060f);--bad:#ff5c9e;--okd:light-dark(#0b8a62,#3be8b0);--badd:light-dark(#d6246f,#ff7ab3)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
@@ -85,8 +88,9 @@ h3.sec{font-size:22px;margin:28px 0 12px}
 .qcard{background:var(--card);border:2.5px solid var(--ink);border-radius:22px;padding:20px 18px;box-shadow:5px 5px 0 var(--sh)}
 .qmeta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;font-size:14px;color:var(--mute);font-weight:500}
 .tag{color:#171a3a;background:var(--c);border-radius:8px;padding:2px 10px;font-weight:700}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 2px;font-size:.92em}.frac>span:first-child{border-bottom:1.6px solid currentColor;padding:0 3px 1px}.frac>span:last-child{padding:1px 3px 0}
 .ltr{unicode-bidi:isolate;direction:ltr;display:inline-block;max-width:100%}
-.qt{font-size:clamp(18px,4.6vw,21px);font-weight:600;line-height:1.7;margin:0 0 16px}
+.qt{font-size:clamp(18px,4.6vw,21px);font-weight:600;line-height:1.7;margin:0 0 16px;white-space:pre-line}
 .pc{display:block;overflow:hidden;position:relative;max-width:100%;direction:ltr}
 .svgfig svg{display:block;width:100%;max-width:340px;margin:0 auto 14px;color:var(--ink)}.fimg{display:block;width:100%;height:auto;margin:0 auto 14px;border-radius:10px}.osvg svg{display:block;height:36px;width:auto;color:var(--ink)}
 .qwrap{overflow-x:auto;margin:0 0 16px;padding-bottom:4px}.qwrap .pc{max-width:none;margin-inline-start:auto}.qwrap.fig .pc{margin-inline:auto}
@@ -242,15 +246,16 @@ nav.tabs button:active svg{transform:scale(.88)}
 /* bottom bar: floating glass pill; the active tab lifts into a bubble that slides and pushes the notch (liquid feel) */
 @property --nx{syntax:'<percentage>';inherits:true;initial-value:90%}
 nav.tabs{--nx:90%;position:fixed;inset-inline:0;margin-inline:auto;bottom:calc(10px + env(safe-area-inset-bottom,0px));width:min(calc(100% - 24px),480px);z-index:10;transition:--nx 560ms linear(0.000, 0.037, 0.129, 0.253, 0.392, 0.531, 0.661, 0.775, 0.871, 0.947, 1.003, 1.043, 1.068, 1.080, 1.084, 1.080, 1.072, 1.062, 1.050, 1.038, 1.028, 1.018, 1.010, 1.004, 0.999, 0.996, 0.994, 0.993, 0.993, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 0.999, 1.000, 1.000, 1.000, 1),transform 320ms var(--ease-out),opacity 320ms var(--ease-out)}
-nav.tabs::before{content:"";position:absolute;inset:0;border-radius:30px;background:color-mix(in srgb,var(--card) 72%,transparent);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);border:1.5px solid color-mix(in srgb,var(--ink) 16%,transparent);box-shadow:0 14px 34px -14px rgba(23,26,58,.45),0 0 26px var(--glow),inset 0 1px 0 rgba(255,255,255,.4);-webkit-mask:radial-gradient(circle 37px at var(--nx) -6px,transparent 96%,#000 100%);mask:radial-gradient(circle 37px at var(--nx) -6px,transparent 96%,#000 100%)}
+nav.tabs::before{content:"";position:absolute;inset:0;border-radius:22px;background:var(--card);border:2.5px solid var(--ink);box-shadow:5px 5px 0 var(--sh)}
 nav.tabs .in{position:relative;display:grid;grid-template-columns:repeat(5,1fr);height:64px}
-nav.tabs button{position:relative;z-index:1;border:0;background:none;display:grid;place-items:center;color:var(--mute);cursor:pointer;border-radius:22px;min-height:64px}
+nav.tabs button{position:relative;z-index:1;border:0;background:none;display:grid;place-items:center;color:var(--ink);cursor:pointer;border-radius:22px;min-height:64px}
 nav.tabs button svg{width:25px;height:25px;transition:transform 520ms linear(0.000, 0.037, 0.129, 0.253, 0.392, 0.531, 0.661, 0.775, 0.871, 0.947, 1.003, 1.043, 1.068, 1.080, 1.084, 1.080, 1.072, 1.062, 1.050, 1.038, 1.028, 1.018, 1.010, 1.004, 0.999, 0.996, 0.994, 0.993, 0.993, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 0.999, 1.000, 1.000, 1.000, 1),color 220ms ease}
-nav.tabs button[aria-selected=true]{color:#fff}
+nav.tabs button[aria-selected=true]{color:#171a3a}
 nav.tabs button[aria-selected=true] svg{transform:translateY(-27px)}
 nav.tabs button:active svg{scale:.9}
 nav.tabs .ind{position:absolute;top:0;bottom:0;right:0;width:20%;pointer-events:none;transition:transform 560ms linear(0.000, 0.037, 0.129, 0.253, 0.392, 0.531, 0.661, 0.775, 0.871, 0.947, 1.003, 1.043, 1.068, 1.080, 1.084, 1.080, 1.072, 1.062, 1.050, 1.038, 1.028, 1.018, 1.010, 1.004, 0.999, 0.996, 0.994, 0.993, 0.993, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 0.999, 1.000, 1.000, 1.000, 1)}
-nav.tabs .ind i{position:absolute;left:50%;top:-27px;width:56px;height:56px;margin-left:-28px;border-radius:50%;background:var(--cob);box-shadow:0 8px 18px -6px rgba(43,59,255,.6),0 0 22px var(--glow),inset 0 1px 0 rgba(255,255,255,.35)}
+nav.tabs .ind b{position:absolute;left:50%;top:-35px;width:72px;height:72px;margin-left:-36px;border-radius:50%;background:var(--bg);border:2.5px solid var(--ink);clip-path:inset(34px -4px -4px -4px)}
+nav.tabs .ind i{position:absolute;left:50%;top:-27px;width:56px;height:56px;margin-left:-28px;border-radius:50%;background:var(--chem)}
 nav.tabs.min{transform:translateY(6px) scale(.94);opacity:.92}
 /* scrolling: content rises into place as it enters the screen */
 html{scroll-behavior:smooth}
@@ -258,8 +263,11 @@ html{scroll-behavior:smooth}
   .tile,.track,.freq,.law,.board li,.panel,.goal,.stat,.laws-btn,.rev{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
 }
 @keyframes rise{from{opacity:0;transform:translateY(22px) scale(.97)}}
+/* dark green noise over the whole site */
+html::after{content:"";position:fixed;inset:0;z-index:300;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22180%22%20height%3D%22180%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22/%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.05%20%200%200%200%200%20.24%20%200%200%200%200%20.15%20%200%200%200%201.4%20-.35%22/%3E%3C/filter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22/%3E%3C/svg%3E");opacity:.15}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light])::after{opacity:.22}}:root[data-theme=dark]::after{opacity:.22}
 /* very subtle glow on main surfaces */
-.track,.tile,.qcard,.panel,.freq,.laws-btn,.mycoins,.law,.cta:not(:disabled){filter:drop-shadow(0 0 12px var(--glow))}
+.track,.tile,.qcard,.panel,.freq,.laws-btn,.mycoins,.law,.cta:not(:disabled){filter:drop-shadow(0 0 16px var(--glow))}
 /* press feedback on round icon buttons */
 .x,.back,.pill{transition:transform 120ms var(--ease-out)}
 .x:active,.back:active,.pill:active{transform:scale(.94)}
@@ -387,7 +395,7 @@ html{scroll-behavior:smooth}
 <small>رقمك ما يطلع لأحد. نستخدمه بس عشان نرجّع لك حسابك لو غيّرت جهازك (سجّل بنفس الاسم والرقم).</small></form></div>
 <div class="toast" id="toast"></div>
 
-<nav class="tabs" aria-label="التنقل"><div class="in" role="tablist"><span class="ind" id="tabInd" aria-hidden="true"><i></i></span>
+<nav class="tabs" aria-label="التنقل"><div class="in" role="tablist"><span class="ind" id="tabInd" aria-hidden="true"><b></b><i></i></span>
   <button role="tab" data-v="home" aria-selected="true" aria-label="تدرّب" title="تدرّب"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 20l1-5L16 4l4 4L9 19z"/><path d="M14 6l4 4"/></svg><span class="sr">تدرّب</span></button>
   <button role="tab" data-v="test" aria-selected="false" aria-label="اختبار محاكي" title="اختبار محاكي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg><span class="sr">اختبار محاكي</span></button>
   <button role="tab" data-v="coach" aria-selected="false" aria-label="المدرّب" title="المدرّب"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8"/></svg><span class="sr">المدرّب</span></button>
@@ -405,10 +413,14 @@ const refOf=q=>{if(!q.ref)return null;const[k,c]=q.ref.split(':');const b=BOOKS[
 const L=['أ','ب','ج','د'];const GOAL=20,RN=10,TN=20,TMIN=20;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-// keep formulas, numbers and Latin runs in left-to-right order inside Arabic text
-const LTR_RUN=/[A-Za-z0-9(\[⟨−+√ΔθπΩ][A-Za-z0-9 ()\[\]⟨⟩.,:=+\-−×÷\/^*·°%∧∨~→⇌⁰-⁹⁺⁻₀-₉ΔθπΩ√⁄∥′|≤≥<>]*[A-Za-z0-9)\]⟩°%⁰-⁹⁺⁻₀-₉′]|[A-Za-z0-9]/g;
-const fmtT=t=>{t=String(t);if(!/[\u0600-\u06FF]/.test(t))return `<span dir="ltr" class="ltr">${esc(t)}</span>`;
-  let out='',last=0;t.replace(LTR_RUN,(m,i)=>{out+=esc(t.slice(last,i))+(/^[0-9]+$/.test(m)?esc(m):`<span dir="ltr" class="ltr">${esc(m)}</span>`);last=i+m.length;return m});return out+esc(t.slice(last))};
+// keep formulas, numbers and Latin runs in left-to-right order inside Arabic text; ⟦a|b⟧ is a stacked fraction
+const MATH_RUN=/(?:⟦[^⟧]*⟧|[A-Za-z0-9(\[⟨{−+√∛∜ΔθπΩ∞¹²³⁰-⁹⁺⁻⁼₀-₉₊₋₌ₓₖ₍₎ᴬᴮⁿˣ.,:;=<>≤≥×÷\/^*·°%∧∨~→⇌⁄∥′∘∪∩!?'"\-\])}⟩| ])+/g;
+const fracH=t=>t.split(/(⟦[^⟧]*⟧)/).filter(Boolean).map(x=>{const m=x.match(/^⟦([^|⟧]*)\|([^⟧]*)⟧$/);return m?`<span class="frac" dir="ltr"><span>${esc(m[1])}</span><span>${esc(m[2])}</span></span>`:esc(x)}).join('');
+const fmtT=t=>{t=String(t);let out='',last=0;
+  t.replace(MATH_RUN,(m,i)=>{const lead=m.match(/^[\s.,:;!?'"]*/)[0],trail=m.slice(lead.length).match(/[\s.,:;!?'"]*$/)[0];const core=m.slice(lead.length,m.length-trail.length);
+    if(!/[A-Za-z0-9⟦√∞πθ¹²³⁰-⁹₀-₉]/.test(core)||/^[0-9]+$/.test(core)){return m}
+    out+=esc(t.slice(last,i))+esc(lead)+`<span dir="ltr" class="ltr">${fracH(core)}</span>`+esc(trail);last=i+m.length;return m});
+  return out+esc(t.slice(last))};
 const fmtN=n=>new Intl.NumberFormat('en-US').format(Number(n)||0);
 const fmtC=n=>(n=Number(n)||0)>=100000?new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(n):fmtN(n);
 const today=()=>new Date().toLocaleDateString('en-CA');
@@ -430,8 +442,8 @@ const TABS=[...document.querySelectorAll('nav.tabs button')].map(b=>b.dataset.v)
 const RM=matchMedia('(prefers-reduced-motion: reduce)');
 function moveTab(b,a){const nav=document.querySelector('nav.tabs'),ind=$('tabInd');
   ind.style.transform=`translateX(${-b*100}%)`;nav.style.setProperty('--nx',(100-(b+.5)*20)+'%');
-  if(a>-1&&a!==b&&!RM.matches&&ind.firstChild.animate){const far=Math.min(Math.abs(b-a),3);
-    ind.firstChild.animate([{transform:'scale(1,1)'},{transform:`scale(${1+.14*far},${1-.08*far})`,offset:.35},{transform:'scale(.96,1.04)',offset:.7},{transform:'scale(1,1)'}],{duration:560,easing:'ease-in-out'})}}
+  if(a>-1&&a!==b&&!RM.matches&&ind.lastChild.animate){const far=Math.min(Math.abs(b-a),3);
+    ind.lastChild.animate([{transform:'scale(1,1)'},{transform:`scale(${1+.14*far},${1-.08*far})`,offset:.35},{transform:'scale(.96,1.04)',offset:.7},{transform:'scale(1,1)'}],{duration:560,easing:'ease-in-out'})}}
 function show(v){const from=curV;if(v!==curV){prevV=curV;curV=v}
   const el=$('v-'+v),a=TABS.indexOf(from),b=TABS.indexOf(v);if(el){el.classList.remove('from-s','from-e');if(a>-1&&b>-1&&a!==b)el.classList.add(b>a?'from-e':'from-s')}
   if(b>-1)moveTab(b,a);document.body.classList.toggle('onstart',['start','qud','laws','rank'].includes(v));if(v==='rank')drawRank();if(v==='laws')drawLaws();if(v==='start')drawHome();document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
@@ -676,7 +688,7 @@ if(inClaude){Promise.all([claude.use('db'),claude.use('user')]).then(async([d,u]
 $('goTah').onclick=()=>show('home');$('goQud').onclick=()=>show('qud');$('qBack').onclick=()=>show('start');$('qToTah').onclick=()=>show('home');$('toStart').onclick=()=>show('start');
 document.body.classList.add('onstart');
 drawHome();
-fetch('bank.json').then(r=>r.json()).then(d=>{B=d;drawHome()}).catch(()=>toast('ما قدرت أحمّل الأسئلة، حدّث الصفحة'));
+fetch('bank.json?v=5192eb72c3').then(r=>r.json()).then(d=>{B=d;drawHome()}).catch(()=>toast('ما قدرت أحمّل الأسئلة، حدّث الصفحة'));
 if(window.claude&&claude.use)claude.use('sample').then(async s=>{if(!s)return;ai=s;$('askb').disabled=false;$('v-coach').classList.remove('off');
   $('coachNote').textContent='اسأل عن أي درس أو مسألة في الأحياء، الكيمياء، الفيزياء، أو الرياضيات.';
   try{aiImg=!!(await s.limits()).images}catch(e){}}).catch(()=>{});
