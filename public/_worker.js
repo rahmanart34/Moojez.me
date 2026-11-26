@@ -66,12 +66,14 @@ async function api(request, env, url) {
     const old = await env.DB.prepare("SELECT * FROM players WHERE phone=?").bind(phone).first();
     if (old) {
       // نفس الرقم ونفس الاسم = نفس الطالب رجع من جهاز ثاني
-      if (old.name.toLowerCase() === name.toLowerCase()) return J({ ok: true, token: old.token, name: old.name, coins: old.coins });
+      if (old.name.toLowerCase() === name.toLowerCase()) return J({ ok: true, back: true, token: old.token, name: old.name, coins: old.coins });
       return J({ error: "PHONE_TAKEN" }, 409);
     }
+    // كوينز جمعها الطالب قبل ما يسجّل (التسجيل اختياري)، بحد أعلى 500
+    const start = Math.min(500, Math.max(0, Math.floor(Number(b.coins) || 0)));
     const token = crypto.randomUUID(), t = Date.now();
-    await env.DB.prepare("INSERT INTO players (token, name, phone, coins, created, updated) VALUES (?,?,?,0,?,?)").bind(token, name, phone, t, t).run();
-    return J({ ok: true, token, name, coins: 0 });
+    await env.DB.prepare("INSERT INTO players (token, name, phone, coins, created, updated) VALUES (?,?,?,?,?,?)").bind(token, name, phone, start, t, t).run();
+    return J({ ok: true, token, name, coins: start });
   }
 
   if (p === "/api/coins") {
