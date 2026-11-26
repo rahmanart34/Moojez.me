@@ -141,11 +141,15 @@ h3.sec{font-size:22px;margin:28px 0 12px}
 .panel h2{margin:0 0 6px;font-size:28px;line-height:1.2}
 .muted{color:var(--mute);font-size:15px;margin:0}
 /* chat */
-.chat{display:flex;flex-direction:column;gap:10px;min-height:46dvh;padding:4px 0}
+#lawCats{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;margin-inline:-16px;padding:2px 16px 6px;scroll-padding-inline:16px}#lawCats::-webkit-scrollbar{display:none}#lawCats .chip{flex:none;white-space:nowrap}
+.coach-h{margin-bottom:14px}.coach-h h2{margin:0}.coach-h h2 .ttl{height:34px}.coach-h p{margin:6px 0 0}
+.sugs{display:grid;gap:8px;margin-bottom:12px}.sugs[hidden]{display:none}.sugs .chip{text-align:start;border-radius:14px;padding:10px 14px;font:600 15px/1.5 "Readex Pro";color:var(--ink)}
+.chat{display:flex;flex-direction:column;gap:10px}.chat:empty{display:none}
 .msg{max-width:86%;padding:10px 14px;border-radius:18px;white-space:pre-wrap;font-size:15.5px;border:2px solid var(--ink)}
 .msg.u{align-self:flex-start;background:var(--cob);color:#fff;border-color:var(--cob);border-bottom-right-radius:6px}
 .msg.a{align-self:flex-end;background:var(--card);border-bottom-left-radius:6px}
-.ask{position:sticky;bottom:84px;display:flex;gap:8px;margin-top:12px;background:var(--bg);padding:8px 0}
+.ask{position:sticky;bottom:calc(72px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;margin-top:12px;background:var(--bg);padding:8px 0}
+#v-coach.off .ask,#v-coach.off .sugs{display:none}
 .ask textarea{flex:1;resize:none;border:2px solid var(--ink);border-radius:16px;padding:12px 14px;font:16px "Readex Pro";background:var(--card);color:var(--ink);min-height:52px}
 .ask .cta{flex:none}
 /* progress */
@@ -238,12 +242,12 @@ html.splash-on .splash{display:grid;position:fixed;inset:0;z-index:100;place-ite
 nav.tabs{animation:navIn 280ms var(--ease-out)}
 @keyframes navIn{from{transform:translateY(100%)}}
 nav.tabs .in{position:relative}
-nav.tabs .ind{position:absolute;top:0;right:0;width:20%;height:34px;pointer-events:none;transition:transform 260ms var(--ease-in-out)}
-nav.tabs .ind::before{content:"";position:absolute;top:2px;left:50%;width:44px;height:28px;margin-left:-22px;border-radius:11px;background:var(--chem);border:2px solid var(--ink)}
+nav.tabs .ind{position:absolute;top:0;right:0;width:20%;height:100%;pointer-events:none;transition:transform 260ms var(--ease-in-out)}
+nav.tabs .ind::before{content:"";position:absolute;inset:0 3px;border-radius:14px;background:var(--chem);border:2px solid var(--ink)}
 nav.tabs button{position:relative;z-index:1}
 nav.tabs button svg{transition:transform 140ms var(--ease-out)}
 nav.tabs button:active svg{transform:scale(.88)}
-nav.tabs button[aria-selected=true] svg{color:#171a3a}
+nav.tabs button[aria-selected=true]{color:#171a3a}
 /* press feedback on round icon buttons */
 .x,.back,.pill{transition:transform 120ms var(--ease-out)}
 .x:active,.back:active,.pill:active{transform:scale(.94)}
@@ -344,12 +348,12 @@ nav.tabs button[aria-selected=true] svg{color:#171a3a}
 
   <!-- COACH -->
   <section class="view" id="v-coach">
-    <div class="panel">
+    <div class="coach-h">
       <h2><svg class="ttl" viewBox="0 0 264 66.95" role="img" aria-hidden="true"> <defs> <g> <g id="gcoach-0-0"> <path d="M 2.30 -20.96 C 0 -7.57 1.39 0 18.56 0 L 27.19 0 C 36.07 0 42.83 -4.98 40.58 -16.98 L 39.52 -22.44 L 32.52 -21.10 L 34.01 -12.85 C 34.58 -9.59 33.62 -9.06 29.55 -9.06 L 18.56 -9.06 C 7.43 -9.06 6.81 -11.41 8.20 -20.29 Z M 20.57 13.52 L 25.61 8.44 L 20.57 3.40 L 15.54 8.44 Z M 20.57 13.52 "/> </g> <g id="gcoach-0-1"> <path d="M 3.83 -8.58 L 4.46 -4.60 C 4.79 -2.54 3.78 -2.49 3.55 -2.49 C 1.96 -2.49 1.77 -4.17 1.77 -7.10 L -0.57 -7.10 C -0.57 -3.93 -1.77 -1.91 -3.40 -1.91 C -4.26 -1.91 -4.94 -2.49 -4.94 -4.79 L -4.94 -6.57 L -7.48 -6.57 L -7.48 -4.50 C -7.48 -1.82 -6.62 0.57 -3.83 0.57 C -1.48 0.57 -0.38 -1.19 0.14 -2.97 C 0.43 -1.82 1.00 0 3.35 0 C 5.75 0 7.19 -1.91 6.81 -4.79 L 6.23 -8.92 Z M 3.83 -8.58 "/> </g> <g id="gcoach-0-2"> <path d="M 2.87 -18.66 C 4.36 -12.18 5.37 -8.10 5.37 -4.60 C 5.37 0.52 3.16 3.59 -3.5 3.59 L -5.37 3.59 L -5.37 11.51 L -2.01 11.51 C 8.30 11.51 11.65 4.22 11.65 -4.55 C 11.65 -9.59 10.55 -14.72 9.21 -20.29 Z M 2.87 -18.66 "/> </g> <g id="gcoach-0-3"> <path d="M 9.59 0 L 9.59 -36.26 L 2.87 -36.26 L 2.87 0 Z M 9.59 0 "/> </g> <g id="gcoach-0-4"> </g> <g id="gcoach-0-5"> <path d="M 1.87 -15.20 C 1.48 -13.91 0.33 -10.21 0.33 -6.23 C 0.33 0.09 3.21 8.34 13.33 8.34 C 19.47 8.34 28.87 5.32 28.87 -10.41 L 28.87 -36.26 L 22.16 -36.26 L 22.16 -6.18 C 22.16 -1.48 17.94 -0.33 14.29 -0.33 C 9.83 -0.33 6.52 -2.06 6.52 -7.72 C 6.52 -9.97 7.05 -12.57 7.43 -14.29 Z M 1.87 -15.20 "/> </g> <g id="gcoach-1-0"> <path d="M 6.71 -13.04 L 0.96 -13.04 C 0.96 -6.33 2.54 0 10.98 0 C 14.24 0 16.98 -0.96 19.18 -2.54 L 20.62 -7.82 L 21.15 -6.42 C 22.97 -1.63 25.37 0 28.73 0 C 30.26 0 31.08 -0.81 31.08 -2.35 L 31.08 -9.06 C 28.16 -9.06 27.29 -9.21 26.38 -11.75 L 20.53 -28.25 L 13.96 -25.47 L 19.81 -9.97 C 17.65 -9.5 14.53 -9.06 11.99 -9.06 C 6.90 -9.06 6.71 -10.89 6.71 -13.04 Z M 6.71 -13.04 "/> </g> <g id="gcoach-1-1"> <path d="M 2.30 -9.06 C 0.81 -9.06 0 -8.25 0 -6.76 L 0 0 C 1.67 0 4.36 -0.52 6.18 -2.20 L 7.29 -6.81 C 8.53 -2.54 12.08 0 16.55 0 C 18.80 0 20.72 -0.67 21.97 -1.39 L 23.83 -6.71 L 24.37 -5.56 C 26.19 -1.34 28.97 0 31.80 0 C 33.29 0 34.10 -0.81 34.10 -2.30 L 34.10 -9.06 C 30.12 -9.06 29.16 -10.31 28.06 -12.90 L 27.39 -14.48 C 25.42 -19.14 22.25 -21.58 17.55 -21.58 C 10.93 -21.58 6.81 -16.69 6.81 -10.36 C 6.81 -10.07 6.81 -9.78 6.85 -9.54 C 5.56 -9.16 4.17 -9.06 2.30 -9.06 Z M 17.41 -7.91 C 14.05 -7.91 12.08 -8.82 12.08 -10.64 C 12.08 -12.57 14.24 -13.91 16.88 -13.91 C 20.43 -13.91 21.82 -11.41 22.40 -10.12 L 23.02 -8.68 C 21.30 -8.25 19.37 -7.91 17.41 -7.91 Z M 17.41 -7.91 "/> </g> <g id="gcoach-1-2"> <path d="M 2.30 -9.06 C 0.81 -9.06 0 -8.25 0 -6.76 L 0 0 C 8.73 0 11.22 -6.28 11.22 -15.01 L 11.22 -36.26 L 4.50 -36.26 L 4.50 -11.46 C 4.50 -9.73 3.74 -9.06 2.30 -9.06 Z M 2.30 -9.06 "/> </g> <g id="gcoach-1-3"> <path d="M 12.42 0 C 13.96 0 14.77 -0.81 14.77 -2.35 L 14.77 -9.06 C 10.69 -9.06 9.59 -9.5 9.59 -12.66 L 9.59 -32.62 L 2.87 -32.62 L 2.87 -11.22 C 2.87 -3.30 7.67 0 12.42 0 Z M 1.48 -34.10 L 11.60 -36.50 L 11.17 -39.67 L 7.53 -39 C 7.48 -39 7.43 -39 7.33 -38.95 C 4.98 -38.51 3.88 -39.67 3.88 -40.63 C 3.88 -41.64 5.13 -42.16 6.09 -42.16 C 7.29 -42.16 8.05 -41.30 8.30 -40.63 L 10.64 -41.58 C 10.41 -43.51 9.35 -45.57 6.52 -45.57 C 3.55 -45.57 1.63 -43.31 1.63 -40.39 C 1.63 -38.95 2.10 -37.89 3.02 -37.08 C 2.54 -36.84 2.01 -36.64 1.34 -36.41 Z M 1.48 -34.10 "/> </g> <g id="gcoach-1-4"> <path d="M 22.73 -11.99 C 22.5 -10.89 22.40 -9.88 22.40 -8.92 C 21.53 -8.68 20.57 -8.49 19.18 -8.49 C 16.26 -8.49 14.82 -9.25 13.43 -10.45 L 15.30 -13.23 L 10.50 -16.40 L 7.19 -11.60 C 6.04 -9.92 4.50 -9.06 2.35 -9.06 C 0.81 -9.06 0 -8.25 0 -6.71 L 0 0 C 3.93 0 6.04 -0.71 8.73 -3.88 C 10.74 -1.10 13.28 0 15.54 0 C 17.75 0 19.57 -1.10 20.72 -1.96 L 22.54 -7.10 C 23.26 -2.83 26.62 -0.43 31.42 -0.43 C 38.08 -0.43 41.64 -5.03 41.64 -10.02 C 41.64 -12.47 40.77 -15.97 39.48 -20.67 L 32.62 -18.66 C 34.25 -13.33 34.97 -10.26 34.97 -9.69 C 34.97 -8.82 33.53 -8.53 32.76 -8.53 C 29.64 -8.53 28.83 -9.69 29.21 -11.89 L 29.74 -14.82 L 23.60 -16.07 Z M 22.73 -11.99 "/> </g> </g> </defs> <g fill="currentColor" > <use xlink:href="#gcoach-0-0" x="5.50" y="50.96"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-0-1" x="54.76" y="27.31"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-0-2" x="48.43" y="50.96"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-1-0" x="61.53" y="50.96"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-1-1" x="90.31" y="50.96"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-1-2" x="122.11" y="50.96"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-0-3" x="135.50" y="50.96"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-0-4" x="147.97" y="50.96"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-0-5" x="159.92" y="50.96"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-1-3" x="190.95" y="50.96"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-1-4" x="203.43" y="50.96"/> </g> <g fill="currentColor" > <use xlink:href="#gcoach-0-3" x="246.94" y="50.96"/> </g> </svg> <span class="sr">اسأل المدرّب</span></h2>
       <p class="muted" id="coachNote">اسأل عن أي درس أو مسألة في الأحياء، الكيمياء، الفيزياء، أو الرياضيات.</p>
     </div>
+    <div class="sugs" id="sugs"></div>
     <div class="chat" id="chat"></div>
-    <div class="chips" id="sugs"></div>
     <form class="ask" id="askf"><textarea id="askt" rows="1" enterkeyhint="send" placeholder="اكتب سؤالك هنا"></textarea><button class="cta" id="askb">أرسل</button></form>
   </section>
 
@@ -497,7 +501,7 @@ ${img?'مرفق صورة السؤال من الملف الأصلي، اعتمد 
 الإجابة الصحيحة: ${L[q.a]}
 اختيار الطالب: ${L[k]}
 ${r?`هذا السؤال يقابل درس ${r.code} «${r.n}» في كتاب ${r.book} من منهج وزارة التعليم (يبدأ صفحة ${r.p}). الكتاب هو المرجع الأول: اشرح بمصطلحاته، وهذا ملخص الدرس: ${r.t}`:''}${q.warn?'\nملاحظة على المفتاح: '+q.warn:''}`;
-  try{await ai(p,{images:img?imgs:undefined,onText:({text})=>{box.textContent=text}})}
+  try{await ai(p,{images:img?imgs:undefined,onText:({text})=>{box.innerHTML=fmtT(text)}})}
   catch(e){box.textContent=e&&e.code==='rate_limited'?'المدرّب مضغوط شوي، جرّب بعد دقيقة.':'ما قدرت أوصل للمدرّب الحين، جرّب مرة ثانية.'}
   btn.disabled=false}
 
@@ -554,12 +558,12 @@ function bubble(cls,t){const d=document.createElement('div');d.className='msg '+
 async function send(){const t=$('askt').value.trim();if(!t||!ai)return;$('askt').value='';$('sugs').hidden=true;
   bubble('u',t);hist.push({role:'user',content:t});const d=bubble('a','…');$('askb').disabled=true;
   const input=hist.map((m,i)=>i===0?{role:'user',content:SYS+'\n\nسؤال الطالب: '+m.content}:m);
-  try{const r=await ai(input,{cache:false,tools:TOOLS,onText:({text})=>{d.textContent=text}});d.textContent=r.text;hist.push({role:'assistant',content:r.text})}
+  try{const r=await ai(input,{cache:false,tools:TOOLS,onText:({text})=>{d.innerHTML=fmtT(text)}});d.innerHTML=fmtT(r.text);hist.push({role:'assistant',content:r.text})}
   catch(e){hist.pop();d.textContent=e&&e.code==='rate_limited'?'المدرّب مضغوط شوي، جرّب بعد دقيقة.':'ما قدرت أوصل للمدرّب الحين، جرّب مرة ثانية.'}
   $('askb').disabled=false}
 $('askf').onsubmit=e=>{e.preventDefault();send()};
 $('askt').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}};
-$('askb').disabled=true;$('coachNote').textContent='المدرّب الذكي يشتغل لما تفتح التطبيق من رابطه على Claude.';
+$('askb').disabled=true;$('v-coach').classList.add('off');$('coachNote').textContent='المدرّب الذكي متوفر حالياً داخل نسخة Claude من التطبيق بس. تقدر تستخدم «اشرح لي» بعد كل سؤال هناك.';
 
 
 // ---------- laws (القدرات)
@@ -576,7 +580,7 @@ function drawLaws(){const cats=['الكل',...new Set(LAWS.map(l=>l.c))];
   const list=LAWS.map((l,i)=>[l,i]).filter(([l])=>lawCat==='الكل'||l.c===lawCat);
   $('lawList').innerHTML=list.map(([l,i])=>`<article class="law"><h4>${esc(l.n)}<small>${esc(l.c)}</small></h4><div class="f">${fmt(l.f)}</div><p>${esc(l.d)}</p><div class="ex"><p><b>مثال:</b> ${esc(l.ex)}</p><p><b>الحل:</b> ${esc(l.sol)}</p></div>${ai?`<button class="cta ghost lbtn" data-i="${i}">اشرح لي أكثر</button>`:''}<div class="lai" id="lai${i}"></div></article>`).join('');
   $('lawList').querySelectorAll('.lbtn').forEach(b=>b.onclick=async()=>{const l=LAWS[+b.dataset.i],box=$('lai'+b.dataset.i);box.classList.add('on');box.textContent='المدرّب يكتب…';b.disabled=true;
-    try{await ai(`أنت مدرّب سعودي ودود لاختبار القدرات العامة (القسم الكمي). اشرح للطالب هذا القانون بلهجة سعودية خفيفة وباختصار: متى يستعمله، وخطأ شائع يقع فيه الطلاب، ثم مثالاً جديداً بخيارات أ ب ج د مع حله خطوة بخطوة. بدون Markdown.\nالقانون: ${l.n}\nالصيغة: ${l.f}\nالشرح: ${l.d}`,{onText:({text})=>{box.textContent=text}})}
+    try{await ai(`أنت مدرّب سعودي ودود لاختبار القدرات العامة (القسم الكمي). اشرح للطالب هذا القانون بلهجة سعودية خفيفة وباختصار: متى يستعمله، وخطأ شائع يقع فيه الطلاب، ثم مثالاً جديداً بخيارات أ ب ج د مع حله خطوة بخطوة. بدون Markdown.\nالقانون: ${l.n}\nالصيغة: ${l.f}\nالشرح: ${l.d}`,{onText:({text})=>{box.innerHTML=fmtT(text)}})}
     catch(e){box.textContent='ما قدرت أوصل للمدرّب الحين، جرّب مرة ثانية.'}b.disabled=false})}
 $('goLaws').onclick=()=>show('laws');$('lBack').onclick=()=>show('qud');
 
@@ -654,7 +658,7 @@ $('goTah').onclick=()=>show('home');$('goQud').onclick=()=>show('qud');$('qBack'
 document.body.classList.add('onstart');
 drawHome();
 fetch('bank.json').then(r=>r.json()).then(d=>{B=d;drawHome()}).catch(()=>toast('ما قدرت أحمّل الأسئلة، حدّث الصفحة'));
-if(window.claude&&claude.use)claude.use('sample').then(async s=>{if(!s)return;ai=s;$('askb').disabled=false;
+if(window.claude&&claude.use)claude.use('sample').then(async s=>{if(!s)return;ai=s;$('askb').disabled=false;$('v-coach').classList.remove('off');
   $('coachNote').textContent='اسأل عن أي درس أو مسألة في الأحياء، الكيمياء، الفيزياء، أو الرياضيات.';
   try{aiImg=!!(await s.limits()).images}catch(e){}}).catch(()=>{});
 }
