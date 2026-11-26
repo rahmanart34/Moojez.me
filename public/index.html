@@ -2,7 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#12142b">
 <title>موجزي · مدرّب القدرات والتحصيلي</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%22640%20196%20380%20380%22%3E%3Cpolygon%20points%3D%22933.8%2C279.9%20947.1%2C326.4%20995.1%2C332.3%20954.9%2C359.3%20964.1%2C406.8%20926.0%2C377.0%20883.7%2C400.3%20900.3%2C354.9%20865.0%2C321.9%20913.3%2C323.6%22%20fill%3D%22%23FF4D6D%22%20stroke%3D%22%23171a3a%22%20stroke-width%3D%225%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22838.3%2C247.2%20865.4%2C319.4%20942.5%2C322.7%20882.2%2C370.8%20903.0%2C445.1%20838.5%2C402.6%20774.3%2C445.3%20794.8%2C371.0%20734.3%2C323.0%20811.4%2C319.5%22%20fill%3D%22%235B8CFF%22%20stroke%3D%22%23171a3a%22%20stroke-width%3D%225%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22793.6%2C279.4%20833.7%2C374.3%20936.8%2C374.4%20859.0%2C441.9%20890.7%2C540.0%20802.4%2C486.8%20719.0%2C547.3%20742.2%2C446.9%20658.9%2C386.2%20761.6%2C377.4%22%20fill%3D%22%23FFD23F%22%20stroke%3D%22%23171a3a%22%20stroke-width%3D%225%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E">
 <script>try{if(!sessionStorage.getItem("mzs")){document.documentElement.classList.add("splash-on");sessionStorage.setItem("mzs","1")}}catch(e){}</script>
@@ -20,21 +23,24 @@
 --ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1);--bio:#3be8b0;--chem:#ffe45c;--phys:#5cc8ff;--math:#ff7ab3;--ok:#3be8b0;--sh:light-dark(#171a3a,#05060f);--bad:#ff5c9e;--okd:light-dark(#0b8a62,#3be8b0);--badd:light-dark(#d6246f,#ff7ab3)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;overscroll-behavior:none}body{overscroll-behavior:none}
+button,a,[role=button],label{touch-action:manipulation}
+button,[role=button]{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 html{background:var(--bg)}
 body{margin:0;color:var(--ink);font:16px/1.65 "Readex Pro",system-ui,sans-serif;overflow-x:clip;min-height:100dvh;
 background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
 button{font:inherit;color:inherit}
-button:focus-visible,textarea:focus-visible{outline:3px solid var(--cobi);outline-offset:2px}
+button:focus-visible,textarea:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--cobi);outline-offset:2px}
 .disp{font-family:"Readex Pro",sans-serif;font-weight:800;letter-spacing:-.01em}
 .ttl{display:block;height:1.3em;width:auto;max-width:100%;overflow:visible}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-main{max-width:640px;margin:0 auto;padding:16px 16px 110px}
+main{max-width:640px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(110px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .view{display:none}.view.on{display:block}
 /* top bar */
-.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px;flex-wrap:wrap}
 .brand{display:block}.brand .ttl{height:34px}
 h3.sec .ttl{height:28px}.panel h2 .ttl{height:36px}.freq .fq .ttl{height:30px}.tile .tn .ttl{height:40px}.tile .tn{display:block}
 .pills{display:flex;gap:8px}
-.pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--ink);border-radius:999px;padding:4px 12px 4px 10px;font-weight:600;font-size:15px;white-space:nowrap;box-shadow:2px 2px 0 var(--sh)}
+.pill{min-height:44px;font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--ink);border-radius:999px;padding:4px 12px 4px 10px;font-weight:600;font-size:15px;white-space:nowrap;box-shadow:2px 2px 0 var(--sh)}
 .pill svg{width:18px;height:18px}
 /* highlighter */
 .hl{position:relative;z-index:0;display:inline-block}
@@ -79,7 +85,7 @@ h3.sec{font-size:22px;margin:28px 0 12px}
 .qcard{background:var(--card);border:2.5px solid var(--ink);border-radius:22px;padding:20px 18px;box-shadow:5px 5px 0 var(--sh)}
 .qmeta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;font-size:14px;color:var(--mute);font-weight:500}
 .tag{color:#171a3a;background:var(--c);border-radius:8px;padding:2px 10px;font-weight:700}
-.ltr{unicode-bidi:isolate;direction:ltr}
+.ltr{unicode-bidi:isolate;direction:ltr;display:inline-block;max-width:100%}
 .qt{font-size:clamp(18px,4.6vw,21px);font-weight:600;line-height:1.7;margin:0 0 16px}
 .pc{display:block;overflow:hidden;position:relative;max-width:100%;direction:ltr}
 .svgfig svg{display:block;width:100%;max-width:340px;margin:0 auto 14px;color:var(--ink)}.fimg{display:block;width:100%;height:auto;margin:0 auto 14px;border-radius:10px}.osvg svg{display:block;height:36px;width:auto;color:var(--ink)}
@@ -90,7 +96,7 @@ h3.sec{font-size:22px;margin:28px 0 12px}
 .qimg{cursor:zoom-in;border-radius:10px}
 .opts{display:grid;gap:10px}
 .opt{position:relative;display:flex;align-items:center;gap:14px;width:100%;text-align:start;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:10px 12px;min-height:58px;cursor:pointer;font-size:17px;font-weight:500;transition:border-color .15s,transform .1s}
-.opt:hover:not(:disabled){border-color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.opt:hover:not(:disabled){border-color:var(--ink)}}
 .opt:active:not(:disabled){transform:scale(.985)}
 .opt:disabled{cursor:default}
 .bub{flex:none;width:36px;height:36px;border-radius:50%;border:2.5px solid var(--ink);display:grid;place-items:center;font:700 17px/1 "Readex Pro";position:relative;background:var(--card)}
@@ -99,7 +105,7 @@ h3.sec{font-size:22px;margin:28px 0 12px}
 .opt.pick .bub{background:var(--ink);color:var(--bg);animation:pop .3s}
 .opt.ok{border-color:var(--okd)}.opt.ok .bub{background:var(--ok);color:#171a3a;border-color:var(--ink)}.opt.ok .ot{--hc:var(--ok)}.opt.ok .ot::before{transform:scaleX(1) skew(-6deg)}
 .opt.bad{border-color:var(--badd);animation:shake .4s}.opt.bad .bub{background:var(--bad);color:#171a3a}.opt.bad .ot{--hc:color-mix(in srgb,var(--bad) 55%,transparent)}.opt.bad .ot::before{transform:scaleX(1) skew(-6deg)}
-.opt.dim{opacity:.5}
+.opt.dim{opacity:.66}
 /* sheet */
 .sheet{display:none;margin-top:16px;padding:14px 14px 14px;border-radius:16px;background:color-mix(in srgb,var(--sc) 16%,var(--card));border:2px solid var(--scd);color:var(--ink)}
 .sheet.on{display:block;animation:fbIn .28s cubic-bezier(.2,.9,.2,1)}
@@ -169,7 +175,7 @@ button.pill{cursor:pointer;font:inherit;font-weight:600;color:var(--ink)}
 .law .lai{white-space:pre-wrap;font-size:15px;background:var(--grid);border-radius:10px;padding:10px 12px;margin-top:8px;display:none}.law .lai.on{display:block}
 .law .lbtn{margin-top:8px;min-height:40px;padding:6px 14px;font-size:14px}
 .mycoins{display:flex;align-items:center;gap:14px;background:var(--ink);color:var(--bg);border-radius:20px;padding:14px 18px;box-shadow:4px 4px 0 var(--sh)}
-.mycoins .coinbig svg{width:54px;height:54px;color:#171a3a}.mycoins b{display:block;font:800 34px/1.1 "Readex Pro"}.mycoins span{font-size:14px;opacity:.85}
+.mycoins .coinbig svg{width:54px;height:54px;color:#171a3a}.mycoins b{display:block;font:800 clamp(24px,8vw,34px)/1.1 "Readex Pro";font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.mycoins>div{min-width:0}.mycoins span{font-size:14px;opacity:.85}
 .nick{margin-bottom:16px}.nick label{display:block;font-weight:700;margin-bottom:6px}.nick div{display:flex;gap:8px}
 .nick input{flex:1;border:2px solid var(--ink);border-radius:14px;padding:10px 14px;font:16px "Readex Pro";background:var(--card);color:var(--ink);min-height:48px}
 .board{list-style:none;margin:0;padding:0}
@@ -178,9 +184,9 @@ button.pill{cursor:pointer;font:inherit;font-weight:600;color:var(--ink)}
 .board li:nth-child(1){border-color:#e0a800;background:color-mix(in srgb,#ffd23f 30%,var(--card))}
 .board li:nth-child(2){border-color:#9aa0b5}.board li:nth-child(3){border-color:#c07a3c}
 .board li.me{border-color:var(--cobi);box-shadow:0 0 0 2px var(--cobi)}
-.board li .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.board li .cv{font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:4px}.board li .cv svg{width:18px;height:18px}
+.board li .nm{overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;line-height:1.45;text-align:start}.board li .you{display:inline-block;font-size:12px;font-weight:700;color:var(--bg);background:var(--cobi);border-radius:6px;padding:0 6px;vertical-align:1px;white-space:nowrap}.board li .cv{white-space:nowrap}.board li .cv{font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:4px}.board li .cv svg{width:18px;height:18px}
 .back{flex:none;width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:var(--card);display:grid;place-items:center;cursor:pointer;box-shadow:2px 2px 0 var(--sh)}
-.top .brand{flex:1}
+.top .brand{flex:1;min-width:0}.top .brand .ttl{max-width:100%}.pills{flex-shrink:0}
 .st-head{padding:22px 0 18px}.st-head .ttl{height:40px}.st-head p{margin:10px 0 0;color:var(--mute);font-size:17px}
 .track{display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:100%;text-align:start;border:2.5px solid var(--ink);border-radius:24px;padding:22px 20px;margin-bottom:16px;cursor:pointer;box-shadow:5px 5px 0 var(--sh);transition:transform .12s,box-shadow .12s;position:relative;overflow:hidden}
 .track:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--sh)}
@@ -196,15 +202,15 @@ button.pill{cursor:pointer;font:inherit;font-weight:600;color:var(--ink)}
 .tile.soon{cursor:default;color:#fff}.tile.soon .n{opacity:.85;font-weight:500}
 .zoom{position:fixed;inset:0;z-index:40;background:rgba(10,12,30,.85);display:none;overflow:auto;padding:20px}
 .zoom.on{display:block}.zoom img{background:#fff;max-width:none;border-radius:8px}
-.reg{position:fixed;inset:0;z-index:60;display:none;place-items:center;padding:18px;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(6px)}
+.reg{position:fixed;inset:0;z-index:60;display:none;place-items:center;padding:calc(18px + env(safe-area-inset-top,0px)) 18px calc(18px + env(safe-area-inset-bottom,0px));overflow-y:auto;overscroll-behavior:contain;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(6px)}
 .reg.on{display:grid}.reg form{width:min(420px,100%);background:var(--card);border:2px solid var(--ink);border-radius:22px;padding:22px;box-shadow:0 6px 0 var(--ink)}
 .reg h2{margin:0 0 4px;font-size:22px}.reg p{margin:0 0 14px;color:var(--mute);font-size:14px}
 .reg label{display:block;font-weight:700;margin:10px 0 6px}.reg input{width:100%;box-sizing:border-box;border:2px solid var(--ink);border-radius:14px;padding:10px 14px;font:16px "Readex Pro";background:var(--card);color:var(--ink);min-height:48px}
-.reg .later{display:block;width:100%;margin-top:8px;min-height:44px;background:none;border:0;color:var(--mute);font:600 15px "Readex Pro";cursor:pointer;text-decoration:underline;text-underline-offset:4px}.reg .later:hover{color:var(--ink)}
+.reg .later{display:block;width:100%;margin-top:8px;min-height:44px;background:none;border:0;color:var(--mute);font:600 15px "Readex Pro";cursor:pointer;text-decoration:underline;text-underline-offset:4px}@media (hover:hover) and (pointer:fine){.reg .later:hover{color:var(--ink)}}
 .regcta[hidden]{display:none}.regcta{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:2px dashed var(--line);border-radius:16px;padding:12px 14px;margin:0 0 14px}.regcta p{margin:0;font-weight:600}
 .reg input[dir=ltr]{text-align:right}.reg .err{color:#e0244a;font-weight:600;min-height:1.4em;margin:8px 0 0;font-size:14px}.reg .cta{width:100%;margin-top:10px}.reg small{display:block;color:var(--mute);margin-top:10px;font-size:12.5px;line-height:1.6}
-.toast{position:fixed;top:14px;left:50%;width:max-content;max-width:calc(100vw - 32px);text-align:center;transform:translate(-50%,calc(-100% - 24px));z-index:50;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;transition:transform .3s}
-.toast.on{transform:translate(-50%,0)}
+.toast{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:50%;width:max-content;max-width:calc(100vw - 32px);text-align:center;transform:translate(-50%,calc(-100% - 24px));visibility:hidden;z-index:50;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;transition:transform .3s var(--ease-out),visibility 0s linear .3s}
+.toast.on{transform:translate(-50%,0);visibility:visible;transition:transform .3s var(--ease-out),visibility 0s}
 .empty{color:var(--mute);text-align:center;padding:30px 10px}
 .note{color:var(--mute);font-size:13px;margin-top:22px;text-align:center}
 @keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
@@ -250,6 +256,7 @@ nav.tabs button[aria-selected=true] svg{color:#171a3a}
   .view.on,.view.on.from-s,.view.on.from-e{animation:fade 160ms ease-out!important}
   nav.tabs .ind{transition:none!important}}
 @keyframes fade{from{opacity:0}}
+@media(max-width:300px){.tiles{grid-template-columns:minmax(0,1fr)!important}}
 @media(max-width:380px){.goal{grid-template-columns:1fr;justify-items:center;text-align:center}.tile .disp{font-size:24px}}
 </style>
 </head>
@@ -297,7 +304,7 @@ nav.tabs button[aria-selected=true] svg{color:#171a3a}
     <div class="mycoins"><span class="coinbig"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="#ffd23f" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="6" fill="none" stroke="#b8860b" stroke-width="1.4"/><path d="M12 8.5v7M10 10.5h3.2a1.3 1.3 0 0 1 0 2.6H10.8a1.3 1.3 0 0 0 0 2.6H14" fill="none" stroke="#7a5800" stroke-width="1.4" stroke-linecap="round"/></svg></span><div><b id="myC">0</b><span>كوينز عندك</span></div></div>
     <p class="muted" style="margin:10px 0 14px">كل إجابة صح = 10 كوينز، وإذا جاوبت 3 صح ورا بعض تاخذ 5 زيادة على كل وحدة بعدها.</p>
     <div class="regcta" id="regCta" hidden><p>اسمك مو في الترتيب للحين</p><button class="cta" id="regGo" type="button">سجّل اسمك</button></div>
-    <form class="nick" id="nickF"><label for="nickI">اسمك في الترتيب</label><div><input id="nickI" maxlength="20" placeholder="اكتب اسمك أو لقبك" autocomplete="nickname"><button class="cta">حفظ</button></div></form>
+    <form class="nick" id="nickF"><label for="nickI">اسمك في الترتيب</label><div><input id="nickI" maxlength="20" enterkeyhint="done" placeholder="اكتب اسمك أو لقبك" autocomplete="nickname"><button class="cta">حفظ</button></div></form>
     <ol class="board" id="board"></ol>
     <p class="note" id="rankNote"></p>
   </section>
@@ -343,7 +350,7 @@ nav.tabs button[aria-selected=true] svg{color:#171a3a}
     </div>
     <div class="chat" id="chat"></div>
     <div class="chips" id="sugs"></div>
-    <form class="ask" id="askf"><textarea id="askt" rows="1" placeholder="اكتب سؤالك هنا"></textarea><button class="cta" id="askb">أرسل</button></form>
+    <form class="ask" id="askf"><textarea id="askt" rows="1" enterkeyhint="send" placeholder="اكتب سؤالك هنا"></textarea><button class="cta" id="askb">أرسل</button></form>
   </section>
 
   <!-- PROGRESS -->
@@ -359,8 +366,8 @@ nav.tabs button[aria-selected=true] svg{color:#171a3a}
 <div class="zoom" id="zoom"></div>
 <div class="reg" id="reg" role="dialog" aria-modal="true" aria-labelledby="regT"><form id="regF" novalidate>
 <h2 id="regT">احفظ كوينزك</h2><p id="regD">سجّل مرة وحدة بس، وكوينزك تنحفظ ويطلع اسمك في الترتيب.</p>
-<label for="regN">اسمك</label><input id="regN" maxlength="20" autocomplete="name" placeholder="الاسم اللي يطلع في الترتيب" required>
-<label for="regP">رقم جوالك</label><input id="regP" dir="ltr" inputmode="numeric" autocomplete="tel" maxlength="17" placeholder="05XXXXXXXX" required>
+<label for="regN">اسمك</label><input id="regN" maxlength="20" autocomplete="name" enterkeyhint="next" placeholder="الاسم اللي يطلع في الترتيب" required>
+<label for="regP">رقم جوالك</label><input id="regP" type="tel" dir="ltr" inputmode="numeric" autocomplete="tel" enterkeyhint="done" maxlength="17" placeholder="05XXXXXXXX" required>
 <p class="err" id="regE" role="alert"></p><button class="cta" id="regB">سجّل واحفظ كوينزي</button><button type="button" class="later" id="regL">لاحقاً، خلني أكمّل</button>
 <small>رقمك ما يطلع لأحد. نستخدمه بس عشان نرجّع لك حسابك لو غيّرت جهازك (سجّل بنفس الاسم والرقم).</small></form></div>
 <div class="toast" id="toast"></div>
@@ -387,6 +394,8 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const LTR_RUN=/[A-Za-z0-9(\[⟨−+√ΔθπΩ][A-Za-z0-9 ()\[\]⟨⟩.,:=+\-−×÷\/^*·°%∧∨~→⇌⁰-⁹⁺⁻₀-₉ΔθπΩ√⁄∥′|≤≥<>]*[A-Za-z0-9)\]⟩°%⁰-⁹⁺⁻₀-₉′]|[A-Za-z0-9]/g;
 const fmtT=t=>{t=String(t);if(!/[\u0600-\u06FF]/.test(t))return `<span dir="ltr" class="ltr">${esc(t)}</span>`;
   let out='',last=0;t.replace(LTR_RUN,(m,i)=>{out+=esc(t.slice(last,i))+(/^[0-9]+$/.test(m)?esc(m):`<span dir="ltr" class="ltr">${esc(m)}</span>`);last=i+m.length;return m});return out+esc(t.slice(last))};
+const fmtN=n=>new Intl.NumberFormat('en-US').format(Number(n)||0);
+const fmtC=n=>(n=Number(n)||0)>=100000?new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(n):fmtN(n);
 const today=()=>new Date().toLocaleDateString('en-CA');
 let B=[],ai=null,aiImg=false;
 let st={r:{},xp:0,sk:{d:'',n:0},day:{d:'',c:0}};
@@ -426,7 +435,7 @@ $('zoom').onclick=()=>$('zoom').classList.remove('on');
 function ringSVG(v,max,col){const r=44,C=2*Math.PI*r,p=Math.min(1,v/max);
   return `<svg viewBox="0 0 104 104"><circle cx="52" cy="52" r="${r}" fill="none" stroke="var(--line)" stroke-width="12"/><circle cx="52" cy="52" r="${r}" fill="none" stroke="${col}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p)}" style="transition:stroke-dashoffset .8s"/></svg>`}
 function drawHome(){const c=dayCount();
-  $('streak').textContent=streak();$('xp').textContent=st.xp;document.querySelectorAll('.xpv').forEach(e=>e.textContent=st.xp);
+  $('streak').textContent=streak();$('xp').textContent=fmtC(st.xp);$('xp').parentNode.title=fmtN(st.xp)+' كوينز';document.querySelectorAll('.xpv').forEach(e=>{e.textContent=fmtC(st.xp);e.parentNode.title=fmtN(st.xp)+' كوينز'});
   $('ring').innerHTML=ringSVG(c,GOAL,'var(--cob)')+`<b class="disp">${Math.min(c,GOAL)}<small>من ${GOAL}</small></b>`;
   $('goalT').textContent=c>=GOAL?'خلّصت هدف اليوم!':'هدف اليوم: '+GOAL+' سؤال';
   $('goalP').textContent=c>=GOAL?'كفو! أي سؤال زيادة يزيد كوينزك.':c?`باقي لك ${GOAL-c} سؤال وتخلص هدف اليوم.`:'ابدأ بجولة من 10 أسئلة منوّعة.';
@@ -462,7 +471,7 @@ const PRAISE=['صح عليك!','كفو!','ممتاز!','بطل!','ما شاء ا
 function openSheet(ok,q,k){const sh=$('sheet');sh.style.setProperty('--sc',ok?'var(--ok)':'var(--bad)');sh.style.setProperty('--scd',ok?'var(--okd)':'var(--badd)');
   $('shT').textContent=ok?PRAISE[Math.floor(Math.random()*PRAISE.length)]:'قريبة، بس لا';
   $('shS').innerHTML=ok?(R.combo>2?`+15 كوينز · ${R.combo} صح ورا بعض`:'+10 كوينز'):`الإجابة الصحيحة (${L[q.a]})${q.img&&q.img.m[q.a]||q.osvg?'':': '+fmtT(q.o[q.a])}`;
-  const r=refOf(q);$('shRef').innerHTML=(q.fix||q.warn?`<div class="ai on" style="margin-bottom:10px">${esc(q.fix||q.warn)}</div>`:'')+(r?`<span class="ref">من كتابك: ${esc(r.book)} · درس ${esc(r.code)} «${esc(r.n)}» · صفحة ${r.p}</span>`:'');
+  const r=refOf(q);$('shRef').innerHTML=(q.fix||q.warn?`<div class="ai on" style="margin-bottom:10px">${esc(q.fix||q.warn)}</div>`:'')+(r?`<span class="ref">من كتابك: ${fmtT(r.book)} · درس ${fmtT(r.code)} «${esc(r.n)}» · صفحة ${r.p}</span>`:'');
   $('shAI').classList.remove('on');$('shAI').textContent='';$('shExp').hidden=!ai;$('shExp').disabled=false;
   $('shNext').textContent=R.i<R.ids.length-1?'التالي':'شوف النتيجة';sh.classList.add('on');requestAnimationFrame(()=>{const r=sh.getBoundingClientRect();if(r.bottom>innerHeight-8)sh.scrollIntoView({block:'end',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});$('shNext').focus({preventScroll:true})})}
 $('shNext').onclick=()=>{$('sheet').classList.remove('on');if(R.i<R.ids.length-1){R.i++;drawQ();window.scrollTo(0,0)}else endRound();maybeAskReg()};
@@ -580,8 +589,8 @@ function paintBoard(rows,isMe,nameOf){const ol=$('board');
   if(!rows.length){ol.innerHTML='<li class="empty" style="display:block">ما فيه أحد في الترتيب للحين — جاوب صح وكن الأول.</li>';return}
   ol.innerHTML='';rows.forEach((b,i)=>{const li=document.createElement('li');const mine=isMe(b);if(mine)li.className='me';
     const r=document.createElement('span');r.className='r';r.textContent=b.rank||i+1;
-    const nm=document.createElement('span');nm.className='nm';nm.textContent=nameOf(b)||'طالب';if(mine)nm.textContent+=' (أنت)';
-    const cv=document.createElement('span');cv.className='cv';cv.innerHTML=COIN;cv.append(String(Number(b.coins)||0));
+    const nm=document.createElement('span');nm.className='nm';nm.textContent=nameOf(b)||'طالب';nm.dir='auto';nm.title=nm.textContent;if(mine){const y=document.createElement('span');y.className='you';y.textContent='أنت';nm.append(' ',y)}
+    const cv=document.createElement('span');cv.className='cv';cv.innerHTML=COIN;cv.append(fmtN(b.coins));
     li.append(r,nm,cv);ol.append(li)})}
 let db=null,U=null,me=null,canWrite=null,syncT=null,syncing=false,lastSent=null,board=[];
 function queueSync(){clearTimeout(syncT);syncT=setTimeout(syncNow,1500)}
@@ -592,7 +601,7 @@ async function syncNow(){if(syncing)return;
   if(!db||!me||canWrite===false)return;const body={coins:st.xp,nick:(st.nick||'').slice(0,20),t:Date.now()};
   if(lastSent&&lastSent.coins===body.coins&&lastSent.nick===body.nick)return;
   syncing=true;try{await db.doc('lb/'+me).set(body);lastSent=body}catch(e){if(e&&e.code==='invalid_argument')canWrite=false}syncing=false}
-async function drawRank(){$('myC').textContent=st.xp;$('nickI').value=st.nick||'';
+async function drawRank(){$('myC').textContent=fmtN(st.xp);$('nickI').value=st.nick||'';
   const ol=$('board'),note=$('rankNote');
   if(useSB){note.textContent='';$('regCta').hidden=!!st.tok;$('nickF').hidden=!st.tok;
     try{board=(await rpc('board',{q:st.tok?'?token='+encodeURIComponent(st.tok):''})).rows}catch(e){note.textContent='ما قدرت أحمّل الترتيب الحين، تأكد من النت.';return}
