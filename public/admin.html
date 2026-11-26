@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>موجز — المسجّلين</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#fff,#12142b);--ink:light-dark(#171a3a,#eef0ff);--mute:light-dark(#646a8f,#9aa0c8);--line:light-dark(#dfe3f3,#2a2f5a);--card:light-dark(#fff,#181b38);--cob:#2b3bff}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Readex Pro",system-ui,sans-serif}
+main{max-width:960px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:24px;margin:0 0 4px}.mute{color:var(--mute);margin:0 0 16px}
+form{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+input{flex:1 1 220px;border:2px solid var(--ink);border-radius:12px;padding:10px 14px;font:inherit;background:var(--card);color:var(--ink);min-height:46px}
+button{border:0;background:var(--cob);color:#fff;border-radius:12px;min-height:46px;padding:0 18px;font:700 15px "Readex Pro";cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+button:focus-visible,input:focus-visible{outline:3px solid #ffd23f;outline-offset:2px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.stats div{border:2px solid var(--line);border-radius:12px;padding:8px 14px}.stats b{font-size:20px;display:block}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.wrap{overflow-x:auto;border:2px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:560px}th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:700;background:color-mix(in srgb,var(--cob) 8%,transparent)}td.n{font-variant-numeric:tabular-nums}td[dir=ltr]{text-align:right}
+.err{color:#e0244a;font-weight:600}
+</style>
+</head>
+<body>
+<main>
+<h1>المسجّلين في موجز</h1>
+<p class="mute">الصفحة هذي لك بس. البيانات تطلع بعد ما تكتب كود الإدارة.</p>
+<form id="f"><input id="code" type="password" autocomplete="current-password" placeholder="كود الإدارة" required><button>عرض</button></form>
+<p class="err" id="err" role="alert"></p>
+<div id="out" hidden>
+  <div class="stats"><div><b id="cnt">0</b>طالب مسجّل</div><div><b id="today">0</b>سجّلوا اليوم</div><div><b id="sum">0</b>مجموع الكوينز</div></div>
+  <div class="tools"><input id="q" placeholder="ابحث بالاسم أو الرقم"><button class="ghost" id="csv" type="button">تحميل Excel (CSV)</button></div>
+  <div class="wrap"><table><thead><tr><th>#</th><th>الاسم</th><th>الجوال</th><th>الكوينز</th><th>تاريخ التسجيل</th><th>آخر نشاط</th></tr></thead><tbody id="rows"></tbody></table></div>
+</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);let P=[];
+const dt=t=>new Date(t).toLocaleString('ar-SA-u-nu-latn',{dateStyle:'medium',timeStyle:'short'});
+function draw(){const q=$('q').value.trim();const L=q?P.filter(p=>p.name.includes(q)||p.phone.includes(q)):P;const tb=$('rows');tb.textContent='';
+  L.forEach((p,i)=>{const tr=document.createElement('tr');[[i+1,'n'],[p.name],[p.phone,'n','ltr'],[p.coins,'n'],[dt(p.created)],[dt(p.updated)]].forEach(([v,c,d])=>{const td=document.createElement('td');td.textContent=v;if(c)td.className=c;if(d)td.dir=d;tr.append(td)});tb.append(tr)})}
+async function load(code){const r=await fetch('/api/admin',{headers:{'x-admin-code':code},cache:'no-store'});const j=await r.json().catch(()=>({}));
+  if(!r.ok){throw new Error(j.error==='denied'?'الكود غلط.':j.error==='no_admin'?'ما انضاف كود الإدارة (ADMIN_CODE) في Cloudflare للحين.':'ما قدرت أوصل للسيرفر.')}return j.players}
+$('f').onsubmit=async e=>{e.preventDefault();$('err').textContent='';
+  try{P=await load($('code').value);sessionStorage.setItem('mz-admin',$('code').value);
+    const d0=new Date();d0.setHours(0,0,0,0);$('cnt').textContent=P.length;$('today').textContent=P.filter(p=>p.created>=d0).length;$('sum').textContent=P.reduce((a,p)=>a+p.coins,0);
+    $('out').hidden=false;draw()}catch(err){$('err').textContent=err.message}};
+$('q').oninput=draw;
+$('csv').onclick=()=>{const cell=v=>{v=String(v);if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'};
+  const lines=[['الترتيب','الاسم','الجوال','الكوينز','تاريخ التسجيل','آخر نشاط'],...P.map((p,i)=>[i+1,p.name,p.phone,p.coins,dt(p.created),dt(p.updated)])].map(r=>r.map(cell).join(','));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv'}));a.download='moojez-players.csv';a.click()};
+try{const c=sessionStorage.getItem('mz-admin');if(c){$('code').value=c;$('f').requestSubmit()}}catch(e){}
+</script>
+</body>
+</html>

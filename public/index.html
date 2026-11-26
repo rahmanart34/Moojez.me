@@ -191,6 +191,11 @@ button.pill{cursor:pointer;font:inherit;font-weight:600;color:var(--ink)}
 .tile.soon{cursor:default;color:#fff}.tile.soon .n{opacity:.85;font-weight:500}
 .zoom{position:fixed;inset:0;z-index:40;background:rgba(10,12,30,.85);display:none;overflow:auto;padding:20px}
 .zoom.on{display:block}.zoom img{background:#fff;max-width:none;border-radius:8px}
+.reg{position:fixed;inset:0;z-index:60;display:none;place-items:center;padding:18px;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(6px)}
+.reg.on{display:grid}.reg form{width:min(420px,100%);background:var(--card);border:2px solid var(--ink);border-radius:22px;padding:22px;box-shadow:0 6px 0 var(--ink)}
+.reg h2{margin:0 0 4px;font-size:22px}.reg p{margin:0 0 14px;color:var(--mute);font-size:14px}
+.reg label{display:block;font-weight:700;margin:10px 0 6px}.reg input{width:100%;box-sizing:border-box;border:2px solid var(--ink);border-radius:14px;padding:10px 14px;font:16px "Readex Pro";background:var(--card);color:var(--ink);min-height:48px}
+.reg input[dir=ltr]{text-align:right}.reg .err{color:#e0244a;font-weight:600;min-height:1.4em;margin:8px 0 0;font-size:14px}.reg .cta{width:100%;margin-top:10px}.reg small{display:block;color:var(--mute);margin-top:10px;font-size:12.5px;line-height:1.6}
 .toast{position:fixed;top:14px;left:50%;transform:translate(-50%,-140%);z-index:50;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;transition:transform .3s}
 .toast.on{transform:translate(-50%,0)}
 .empty{color:var(--mute);text-align:center;padding:30px 10px}
@@ -303,6 +308,12 @@ button.pill{cursor:pointer;font:inherit;font-weight:600;color:var(--ink)}
   <div class="btns"><button class="cta ghost" id="shExp">اشرح لي</button><button class="cta" id="shNext">التالي</button></div>
 </div></div>
 <div class="zoom" id="zoom"></div>
+<div class="reg" id="reg" role="dialog" aria-modal="true" aria-labelledby="regT"><form id="regF" novalidate>
+<h2 id="regT">أهلاً فيك في موجز</h2><p>سجّل مرة وحدة بس، وكوينزك تنحفظ ويطلع اسمك في الترتيب.</p>
+<label for="regN">اسمك</label><input id="regN" maxlength="20" autocomplete="name" placeholder="الاسم اللي يطلع في الترتيب" required>
+<label for="regP">رقم جوالك</label><input id="regP" dir="ltr" inputmode="numeric" autocomplete="tel" maxlength="17" placeholder="05XXXXXXXX" required>
+<p class="err" id="regE" role="alert"></p><button class="cta" id="regB">ابدأ</button>
+<small>رقمك ما يطلع لأحد. نستخدمه بس عشان نرجّع لك حسابك لو غيّرت جهازك (سجّل بنفس الاسم والرقم).</small></form></div>
 <div class="toast" id="toast"></div>
 
 <nav class="tabs"><div class="in" role="tablist">
@@ -461,7 +472,7 @@ function drawProg(){const done=Object.keys(st.r).length,right=Object.values(st.r
   <p class="muted">النسبة محسوبة من آخر محاولة لكل سؤال.</p></div>
   <div class="row2"><button class="cta" id="pw" ${Object.values(st.r).includes(0)?'':'disabled'}>راجع أخطائي</button><button class="cta ghost" id="prs">ابدأ من جديد</button></div>`;
   $('pw').onclick=()=>startRound('wrong');
-  $('prs').onclick=()=>{if($('prs').dataset.c){st={r:{},xp:0,sk:{d:'',n:0},day:{d:'',c:0},nick:st.nick};save();drawProg();toast('تم تصفير تقدمك')}else{$('prs').dataset.c=1;$('prs').textContent='متأكد؟ اضغط مرة ثانية'}}}
+  $('prs').onclick=()=>{if($('prs').dataset.c){st={r:{},xp:0,sk:{d:'',n:0},day:{d:'',c:0},nick:st.nick,tok:st.tok};save();drawProg();toast('تم تصفير تقدمك')}else{$('prs').dataset.c=1;$('prs').textContent='متأكد؟ اضغط مرة ثانية'}}}
 
 // ---------- coach
 const SYS=`أنت «المدرّب»، معلم سعودي ودود يجهّز طلاب الثانوي لاختبار التحصيلي (أحياء، كيمياء، فيزياء، رياضيات). أجب بلهجة سعودية خفيفة، باختصار، وبخطوات مرقمة عند الحل، واذكر القانون المستخدم. إذا طلب أسئلة تدريبية اكتب سؤالاً واحداً واطلب إجابته قبل الحل. بدون Markdown ولا جداول. إذا خرج السؤال عن الدراسة رجّعه بلطف.
@@ -504,29 +515,56 @@ function drawLaws(){const cats=['الكل',...new Set(LAWS.map(l=>l.c))];
     catch(e){box.textContent='ما قدرت أوصل للمدرّب الحين، جرّب مرة ثانية.'}b.disabled=false})}
 $('goLaws').onclick=()=>show('laws');$('lBack').onclick=()=>show('qud');
 
-// ---------- coins & leaderboard (shared db)
-let db=null,U=null,me=null,canWrite=null,syncT=null,syncing=false,lastSent=null,board=[];
-function queueSync(){clearTimeout(syncT);syncT=setTimeout(syncNow,1500)}
-async function syncNow(){if(!db||!me||canWrite===false||syncing)return;const body={coins:st.xp,nick:(st.nick||'').slice(0,20),t:Date.now()};
-  if(lastSent&&lastSent.coins===body.coins&&lastSent.nick===body.nick)return;
-  syncing=true;try{await db.doc('lb/'+me).set(body);lastSent=body}catch(e){if(e&&e.code==='invalid_argument')canWrite=false}syncing=false}
+// ---------- coins & leaderboard
+let useSB=false;const inClaude=!!(window.claude&&claude.use);
+async function rpc(fn,args){const r=await fetch('/api/'+fn+(args&&args.q?args.q:''),args&&args.q?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(args)});
+  const j=await r.json().catch(()=>null);if(!r.ok||!j||!j.ok){const e=new Error((j&&j.error)||'net');e.code=(j&&j.error)||'net';throw e}return j}
 const COIN=`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="#ffd23f" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="6" fill="none" stroke="#b8860b" stroke-width="1.4"/></svg>`;
-async function drawRank(){$('myC').textContent=st.xp;$('nickI').value=st.nick||'';
-  const ol=$('board'),note=$('rankNote');
-  if(!db){ol.innerHTML='';note.textContent='الترتيب يحتاج تسجيل الدخول في Claude وفتح التطبيق من رابطه. كوينزك محفوظة على جهازك.';return}
-  if(canWrite===false)note.textContent='تقدر تشوف الترتيب، بس عشان يدخل اسمك فيه لازم تكون صلاحيتك «مشارك» على التطبيق.';else note.textContent='';
-  try{const snap=await db.collection('lb').orderBy('coins','desc').limit(50).get();board=snap.docs.map(d=>({id:d.id,...d.data()}))}catch(e){note.textContent='ما قدرت أحمّل الترتيب الحين.';return}
-  if(!board.length){ol.innerHTML='<li class="empty" style="display:block">ما فيه أحد في الترتيب للحين — جاوب صح وكن الأول.</li>';return}
-  let names={};try{if(U&&U.profiles)names=await U.profiles(board.map(b=>b.id))}catch(e){}
-  ol.innerHTML='';board.forEach((b,i)=>{const li=document.createElement('li');if(b.id===me)li.className='me';
-    const r=document.createElement('span');r.className='r';r.textContent=i+1;
-    const nm=document.createElement('span');nm.className='nm';nm.textContent=(b.nick&&String(b.nick))||(names[b.id]&&names[b.id].name)||'طالب';if(b.id===me)nm.textContent+=' (أنت)';
+function paintBoard(rows,isMe,nameOf){const ol=$('board');
+  if(!rows.length){ol.innerHTML='<li class="empty" style="display:block">ما فيه أحد في الترتيب للحين — جاوب صح وكن الأول.</li>';return}
+  ol.innerHTML='';rows.forEach((b,i)=>{const li=document.createElement('li');const mine=isMe(b);if(mine)li.className='me';
+    const r=document.createElement('span');r.className='r';r.textContent=b.rank||i+1;
+    const nm=document.createElement('span');nm.className='nm';nm.textContent=nameOf(b)||'طالب';if(mine)nm.textContent+=' (أنت)';
     const cv=document.createElement('span');cv.className='cv';cv.innerHTML=COIN;cv.append(String(Number(b.coins)||0));
     li.append(r,nm,cv);ol.append(li)})}
-$('nickF').onsubmit=e=>{e.preventDefault();st.nick=$('nickI').value.trim().slice(0,20);save();lastSent=null;syncNow().then(drawRank);toast('انحفظ اسمك')};
+let db=null,U=null,me=null,canWrite=null,syncT=null,syncing=false,lastSent=null,board=[];
+function queueSync(){clearTimeout(syncT);syncT=setTimeout(syncNow,1500)}
+async function syncNow(){if(syncing)return;
+  if(useSB){if(!st.tok||lastSent===st.xp)return;syncing=true;
+    try{const c=(await rpc('coins',{token:st.tok,coins:st.xp})).coins;lastSent=st.xp;if(c>st.xp){st.xp=c;save();drawHome()}else if(c<st.xp)queueSync()}
+    catch(e){if(/NO_PLAYER/.test(e.code)){delete st.tok;save();openReg()}}syncing=false;return}
+  if(!db||!me||canWrite===false)return;const body={coins:st.xp,nick:(st.nick||'').slice(0,20),t:Date.now()};
+  if(lastSent&&lastSent.coins===body.coins&&lastSent.nick===body.nick)return;
+  syncing=true;try{await db.doc('lb/'+me).set(body);lastSent=body}catch(e){if(e&&e.code==='invalid_argument')canWrite=false}syncing=false}
+async function drawRank(){$('myC').textContent=st.xp;$('nickI').value=st.nick||'';
+  const ol=$('board'),note=$('rankNote');
+  if(useSB){note.textContent='';if(!st.tok){ol.innerHTML='';note.textContent='سجّل اسمك ورقمك عشان يدخل اسمك في الترتيب.';openReg();return}
+    try{board=(await rpc('board',{q:'?token='+encodeURIComponent(st.tok)})).rows}catch(e){note.textContent='ما قدرت أحمّل الترتيب الحين، تأكد من النت.';return}
+    paintBoard(board,b=>b.me,b=>b.name);return}
+  if(!db){ol.innerHTML='';note.textContent=inClaude?'الترتيب يحتاج تسجيل الدخول في Claude. كوينزك محفوظة على جهازك.':'ما قدرت أوصل للترتيب الحين. كوينزك محفوظة على جهازك.';return}
+  if(canWrite===false)note.textContent='تقدر تشوف الترتيب، بس عشان يدخل اسمك فيه لازم تكون صلاحيتك «مشارك» على التطبيق.';else note.textContent='';
+  try{const snap=await db.collection('lb').orderBy('coins','desc').limit(50).get();board=snap.docs.map(d=>({id:d.id,...d.data()}))}catch(e){note.textContent='ما قدرت أحمّل الترتيب الحين.';return}
+  let names={};if(board.length)try{if(U&&U.profiles)names=await U.profiles(board.map(b=>b.id))}catch(e){}
+  paintBoard(board,b=>b.id===me,b=>(b.nick&&String(b.nick))||(names[b.id]&&names[b.id].name))}
+$('nickF').onsubmit=async e=>{e.preventDefault();const v=$('nickI').value.trim().replace(/\s+/g,' ').slice(0,20);
+  if(useSB){if(!st.tok){openReg();return}if(v.length<2){toast('الاسم لازم حرفين على الأقل');return}
+    try{st.nick=(await rpc('rename',{token:st.tok,name:v})).name;save();drawRank();toast('انحفظ اسمك')}catch(err){toast('ما قدرت أحفظ الاسم، جرّب مرة ثانية')}return}
+  st.nick=v;save();lastSent=null;syncNow().then(drawRank);toast('انحفظ اسمك')};
 $('rBack').onclick=()=>show(prevV==='rank'?'start':prevV);
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)show(g.dataset.go)});
-if(window.claude&&claude.use){Promise.all([claude.use('db'),claude.use('user')]).then(async([d,u])=>{db=d;U=u;if(!d||!u)return;me=await u.id();
+// registration (once per student)
+const normPhone=p=>{let d=String(p).replace(/[٠-٩]/g,c=>'٠١٢٣٤٥٦٧٨٩'.indexOf(c)).replace(/\D/g,'');if(/^9665\d{8}$/.test(d))d='0'+d.slice(3);if(/^5\d{8}$/.test(d))d='0'+d;return d};
+function openReg(){if(!useSB||st.tok)return;$('reg').classList.add('on');if(st.nick&&!$('regN').value)$('regN').value=st.nick;setTimeout(()=>$('regN').focus(),50)}
+$('regF').onsubmit=async e=>{e.preventDefault();const n=$('regN').value.trim().replace(/\s+/g,' '),p=normPhone($('regP').value),E=$('regE');E.textContent='';
+  if(n.length<2){E.textContent='اكتب اسمك (حرفين على الأقل).';$('regN').focus();return}
+  if(!/^05\d{8}$/.test(p)){E.textContent='اكتب رقم جوال سعودي صحيح يبدأ بـ 05 (عشر أرقام).';$('regP').focus();return}
+  const b=$('regB');b.disabled=true;b.textContent='لحظة…';
+  try{const r=await rpc('register',{name:n,phone:p});st.tok=r.token;st.nick=r.name;if((r.coins|0)>st.xp)st.xp=r.coins|0;save();lastSent=null;
+    $('reg').classList.remove('on');toast((r.coins|0)>0?'رجعنا لك حسابك، هلا فيك '+r.name:'هلا '+r.name+'! يلا نجمع كوينز');drawHome();queueSync();if(curV==='rank')drawRank()}
+  catch(err){E.textContent=/PHONE_TAKEN/.test(err.code)?'الرقم مسجّل باسم ثاني. لو هو حسابك اكتب نفس الاسم اللي سجّلت فيه.':/BAD_PHONE/.test(err.code)?'رقم الجوال غير صحيح.':/BAD_NAME/.test(err.code)?'الاسم لازم يكون من 2 إلى 20 حرف.':'ما قدرت أوصل للسيرفر، تأكد من النت وجرّب مرة ثانية.'}
+  b.disabled=false;b.textContent='ابدأ'};
+if(!inClaude&&location.protocol.startsWith('http'))fetch('/api/ping',{cache:'no-store'}).then(r=>r.ok&&r.json()).then(j=>{if(!j||!j.ok)return;useSB=true;if(st.tok)queueSync();else openReg();if(curV==='rank')drawRank()}).catch(()=>{});
+if(inClaude){Promise.all([claude.use('db'),claude.use('user')]).then(async([d,u])=>{db=d;U=u;if(!d||!u)return;me=await u.id();
   try{const c=await u.can('data.write');if(c===false)canWrite=false}catch(e){}
   if(me){try{const mine=await db.doc('lb/'+me).get();if(mine.exists){const m=mine.data();if((Number(m.coins)||0)>st.xp){st.xp=Number(m.coins)||0;save();drawHome()}if(m.nick&&!st.nick){st.nick=String(m.nick);save()}}}catch(e){}
   queueSync()}
