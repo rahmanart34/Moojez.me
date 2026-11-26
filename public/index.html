@@ -242,8 +242,8 @@ html.splash-on .splash{display:grid;position:fixed;inset:0;z-index:100;place-ite
 nav.tabs{animation:navIn 280ms var(--ease-out)}
 @keyframes navIn{from{transform:translateY(100%)}}
 nav.tabs .in{position:relative}
-nav.tabs .ind{position:absolute;top:0;right:0;width:20%;height:100%;pointer-events:none;transition:transform 260ms var(--ease-in-out)}
-nav.tabs .ind::before{content:"";position:absolute;inset:0 3px;border-radius:14px;background:var(--chem);border:2px solid var(--ink)}
+nav.tabs .ind{position:absolute;top:-6px;bottom:calc(-6px - env(safe-area-inset-bottom,0px));right:0;width:20%;pointer-events:none;transition:transform 260ms var(--ease-in-out)}
+nav.tabs .ind::before{content:"";position:absolute;inset:0;background:var(--chem);border-inline:2px solid var(--ink)}
 nav.tabs button{position:relative;z-index:1}
 nav.tabs button svg{transition:transform 140ms var(--ease-out)}
 nav.tabs button:active svg{transform:scale(.88)}
