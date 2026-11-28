@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>موجز — المسجّلين</title>
+<title>موجزي — لوحة الإدارة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{color-scheme:light dark;--bg:light-dark(#fff,#12142b);--ink:light-dark(#171a3a,#eef0ff);--mute:light-dark(#646a8f,#9aa0c8);--line:light-dark(#dfe3f3,#2a2f5a);--card:light-dark(#fff,#181b38);--cob:#2b3bff}
@@ -22,18 +22,38 @@ button:focus-visible,input:focus-visible{outline:3px solid #ffd23f;outline-offse
 table{border-collapse:collapse;width:100%;min-width:560px}th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
 th{font-weight:700;background:color-mix(in srgb,var(--cob) 8%,transparent)}td.n{font-variant-numeric:tabular-nums}td[dir=ltr]{text-align:right}
 .err{color:#e0244a;font-weight:600}
+h2{font-size:19px;margin:28px 0 10px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.kpi div{border:2px solid var(--ink);border-radius:14px;padding:10px 14px;background:var(--card)}
+.kpi b{display:block;font-size:26px;font-variant-numeric:tabular-nums}.kpi span{color:var(--mute);font-size:13.5px}
+.chart{border:2px solid var(--line);border-radius:14px;padding:12px;overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:560px;height:auto}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.box{border:2px solid var(--line);border-radius:14px;padding:12px 14px}
+.box h3{margin:0 0 8px;font-size:16px}.box p{margin:0 0 8px;color:var(--mute);font-size:13.5px}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;margin:8px 0;font-size:14px}
+.bar .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bar .v{font-variant-numeric:tabular-nums;font-weight:700}
+.bar .tr{grid-column:1/-1;height:9px;border-radius:9px;background:color-mix(in srgb,var(--ink) 8%,transparent);overflow:hidden}
+.bar .tr i{display:block;height:100%;background:var(--cob);border-radius:9px}
+.bar small{color:var(--mute);font-weight:500}
+.empty{color:var(--mute);font-size:14px}
+.tabs{display:flex;gap:8px;margin:6px 0 4px}.tabs button[aria-pressed=false]{background:transparent;color:var(--ink);border:2px solid var(--ink)}
 </style>
 </head>
 <body>
 <main>
-<h1>المسجّلين في موجز</h1>
+<h1>لوحة موجزي</h1>
 <p class="mute">الصفحة هذي لك بس. البيانات تطلع بعد ما تكتب كود الإدارة.</p>
 <form id="f"><input id="code" type="password" autocomplete="current-password" placeholder="كود الإدارة" required><button>عرض</button></form>
 <p class="err" id="err" role="alert"></p>
 <div id="out" hidden>
+  <div class="tabs"><button type="button" id="tS" aria-pressed="true">الإحصاءات</button><button type="button" id="tP" aria-pressed="false">المسجّلين</button></div>
+  <section id="secS"><div id="dash"><p class="empty">تتحمّل الإحصاءات…</p></div></section>
+  <section id="secP" hidden><h2>المسجّلين</h2>
   <div class="stats"><div><b id="cnt">0</b>طالب مسجّل</div><div><b id="today">0</b>سجّلوا اليوم</div><div><b id="sum">0</b>مجموع الكوينز</div></div>
   <div class="tools"><input id="q" placeholder="ابحث بالاسم أو الرقم"><button class="ghost" id="csv" type="button">تحميل Excel (CSV)</button></div>
   <div class="wrap"><table><thead><tr><th>#</th><th>الاسم</th><th>الجوال</th><th>الكوينز</th><th>تاريخ التسجيل</th><th>آخر نشاط</th></tr></thead><tbody id="rows"></tbody></table></div>
+</section>
 </div>
 </main>
 <script>
@@ -46,8 +66,42 @@ async function load(code){const r=await fetch('/api/admin',{headers:{'x-admin-co
 $('f').onsubmit=async e=>{e.preventDefault();$('err').textContent='';
   try{P=await load($('code').value);sessionStorage.setItem('mz-admin',$('code').value);
     const d0=new Date();d0.setHours(0,0,0,0);$('cnt').textContent=P.length;$('today').textContent=P.filter(p=>p.created>=d0).length;$('sum').textContent=P.reduce((a,p)=>a+p.coins,0);
-    $('out').hidden=false;draw()}catch(err){$('err').textContent=err.message}};
+    $('out').hidden=false;draw();loadStats($('code').value)}catch(err){$('err').textContent=err.message}};
 $('q').oninput=draw;
+const tab=s=>{$('tS').setAttribute('aria-pressed',s);$('tP').setAttribute('aria-pressed',!s);$('secS').hidden=!s;$('secP').hidden=s};$('tS').onclick=()=>tab(true);$('tP').onclick=()=>tab(false);
+const N=n=>new Intl.NumberFormat('en-US').format(n||0);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SUBN={bio:'تحصيلي · الأحياء',chem:'تحصيلي · الكيمياء',phys:'تحصيلي · الفيزياء',math:'تحصيلي · الرياضيات',all:'تحصيلي · كل المواد',freq:'تحصيلي · الأكثر تكراراً',wrong:'مراجعة أخطائي',qk:'قدرات · الكمي',ql:'قدرات · اللفظي',qf:'قدرات · الأكثر تكراراً'};
+const subN=k=>SUBN[k]||(k.startsWith('qs:')?'قدرات · '+k.slice(3):k);
+const VIEWN={start:'الصفحة الأولى',home:'التحصيلي',qud:'القدرات',test:'الاختبار المحاكي',coach:'المدرّب',prog:'تقدّمي',rank:'الترتيب',laws:'القوانين',round:'جولة'};
+const REFN={direct:'مباشر أو من تطبيق (واتساب، سناب…)','t.co':'تويتر / X','x.com':'تويتر / X','tiktok.com':'تيك توك','google.com':'قوقل','google.com.sa':'قوقل','bing.com':'Bing','t.me':'تيليجرام','telegram.org':'تيليجرام','snapchat.com':'سناب شات','instagram.com':'انستقرام','youtube.com':'يوتيوب',tiktok:'تيك توك',x:'تويتر / X',twitter:'تويتر / X',telegram:'تيليجرام',snap:'سناب شات',insta:'انستقرام',whatsapp:'واتساب'};
+function bars(list,max){if(!list.length)return '<p class="empty">ما فيه بيانات للحين.</p>';max=max||Math.max(...list.map(x=>x[1]));
+  return list.map(([t,v,sub])=>`<div class="bar"><span class="t">${esc(t)}${sub?` <small>${esc(sub)}</small>`:''}</span><span class="v">${N(v)}</span><span class="tr"><i style="width:${max&&v?Math.max(2,v/max*100):0}%"></i></span></div>`).join('')}
+function dash(S){const sum={},perDay={};S.events.forEach(e=>{sum[e.k]=(sum[e.k]||0)+e.n;(perDay[e.day]=perDay[e.day]||{})[e.k]=e.n});
+  const g=(pre)=>Object.entries(sum).filter(([k])=>k.startsWith(pre)).map(([k,v])=>[k.slice(pre.length),v]).sort((a,b)=>b[1]-a[1]);
+  const vmap=Object.fromEntries(S.visitors.map(r=>[r.day,r.n]));const days=[];for(let i=29;i>=0;i--){const d=new Date(Date.parse(S.today)-i*864e5).toISOString().slice(0,10);days.push([d,vmap[d]||0])}
+  const ans=g('ans:').reduce((a,[,v])=>a+v,0),okc=g('ok:').reduce((a,[,v])=>a+v,0);
+  const mx=Math.max(1,...days.map(d=>d[1])),W=900,H=220,bw=W/30;
+  const svg=`<svg viewBox="0 0 ${W} ${H+34}" role="img" aria-label="عدد الزوار في آخر 30 يوم">${days.map(([d,n],i)=>{const h=n/mx*(H-24);return `<rect x="${i*bw+3}" y="${H-h}" width="${bw-6}" height="${h}" rx="4" fill="#2b3bff"><title>${d}: ${n} زائر</title></rect>${n?`<text x="${i*bw+bw/2}" y="${H-h-6}" font-size="12" text-anchor="middle" fill="currentColor">${n}</text>`:''}${i%5===4||i===29?`<text x="${i*bw+bw/2}" y="${H+22}" font-size="12" text-anchor="middle" fill="currentColor" opacity=".7">${d.slice(5)}</text>`:''}`}).join('')}<line x1="0" x2="${W}" y1="${H}" y2="${H}" stroke="currentColor" opacity=".3"/></svg>`;
+  const rounds=g('round:').map(([k,v])=>[subN(k),v,sum['end:'+k]?`كمّلها ${Math.round(sum['end:'+k]/v*100)}%`:'']);
+  const subs=g('ans:').map(([k,v])=>[({bio:'الأحياء',chem:'الكيمياء',phys:'الفيزياء',math:'الرياضيات',qk:'قدرات كمي',ql:'قدرات لفظي'})[k]||k,v,sum['ok:'+k]?`صح ${Math.round(sum['ok:'+k]/v*100)}%`:'']);
+  const views=g('view:').map(([k,v])=>[VIEWN[k]||k,v]);
+  const refs={};g('ref:').forEach(([k,v])=>{const n=REFN[k]||k;refs[n]=(refs[n]||0)+v});const refL=Object.entries(refs).sort((a,b)=>b[1]-a[1]);
+  const m=sum['dev:m']||0,d=sum['dev:d']||0,rp=g('regp:').reduce((a,[,v])=>a+v,0),rn=sum['reg:new']||0;
+  const tests=g('test:').reduce((a,[,v])=>a+v,0);
+  $('dash').innerHTML=`<div class="kpi">
+   <div><b>${N(vmap[S.today])}</b><span>زوار اليوم</span></div><div><b>${N(S.uniq7)}</b><span>زوار آخر 7 أيام</span></div>
+   <div><b>${N(S.uniq30)}</b><span>زوار آخر 30 يوم</span></div><div><b>${N(sum.visit)}</b><span>زيارات (جلسات) 30 يوم</span></div>
+   <div><b>${N(ans)}</b><span>إجابات 30 يوم${ans?` · صح ${Math.round(okc/ans*100)}%`:''}</span></div><div><b>${N(P.length)}</b><span>طالب مسجّل</span></div></div>
+   <h2>الزوار يومياً (آخر 30 يوم)</h2><div class="chart">${svg}</div>
+   <div class="grid2" style="margin-top:14px">
+    <div class="box"><h3>وش يجربون أكثر</h3><p>كم مرة بدأوا جولة في كل قسم، وكم منها كمّلوها للنهاية.</p>${bars(rounds)}</div>
+    <div class="box"><h3>الإجابات حسب المادة</h3><p>عدد الأسئلة اللي جاوبوها، ونسبة الصح.</p>${bars(subs)}</div>
+    <div class="box"><h3>الصفحات اللي يفتحونها</h3>${bars(views)}</div>
+    <div class="box"><h3>من وين يجون</h3><p>الرابط اللي جابهم للموقع. اللي من واتساب وسناب يطلع غالباً «مباشر».</p>${bars(refL)}</div>
+    <div class="box"><h3>الأجهزة والتسجيل</h3>${bars([['جوال',m],['كمبيوتر',d]])}${bars([['شافوا طلب التسجيل',rp],['سجّلوا فعلاً',rn,rp?Math.round(rn/rp*100)+'%':'']])}${bars([['بدأوا اختبار محاكي',tests],['كمّلوه',sum.tend||0]])}</div>
+   </div>`}
+async function loadStats(code){try{const r=await fetch('/api/stats',{headers:{'x-admin-code':code},cache:'no-store'});const j=await r.json();if(!r.ok)throw 0;dash(j)}catch(e){$('dash').innerHTML='<p class="err">ما قدرت أحمّل الإحصاءات.</p>'}}
 $('csv').onclick=()=>{const cell=v=>{v=String(v);if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'};
   const lines=[['الترتيب','الاسم','الجوال','الكوينز','تاريخ التسجيل','آخر نشاط'],...P.map((p,i)=>[i+1,p.name,p.phone,p.coins,dt(p.created),dt(p.updated)])].map(r=>r.map(cell).join(','));
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv'}));a.download='moojez-players.csv';a.click()};

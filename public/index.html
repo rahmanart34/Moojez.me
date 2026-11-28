@@ -482,7 +482,7 @@ function moveTab(b,a){const nav=document.querySelector('nav.tabs'),ind=$('tabInd
   ind.style.transform=`translateX(${-b*100}%)`;nav.style.setProperty('--nx',(100-(b+.5)*20)+'%');
   if(a>-1&&a!==b&&!RM.matches&&ind.lastChild.animate){const far=Math.min(Math.abs(b-a),3);
     ind.lastChild.animate([{transform:'scale(1,1)'},{transform:`scale(${1+.14*far},${1-.08*far})`,offset:.35},{transform:'scale(.96,1.04)',offset:.7},{transform:'scale(1,1)'}],{duration:560,easing:'ease-in-out'})}}
-function show(v){const from=curV;if(v!==curV){prevV=curV;curV=v}
+function show(v){const from=curV;if(v!==curV){prevV=curV;curV=v;if(v!=='round')ev('view:'+v)}
   const el=$('v-'+v),a=TABS.indexOf(from),b=TABS.indexOf(v);if(el){el.classList.remove('from-s','from-e');if(a>-1&&b>-1&&a!==b)el.classList.add(b>a?'from-e':'from-s')}
   if(b>-1)moveTab(b,a);document.body.classList.toggle('onstart',['start','qud','laws','rank'].includes(v));if(v==='rank')drawRank();if(v==='laws')drawLaws();if(v==='qud')drawQud();if(v==='start')drawHome();document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
   document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.v===v));
@@ -534,13 +534,13 @@ function pool(sub){if(sub[0]==='q')return qpool(sub);if(sub==='wrong')return uni
   if(sub==='freq'){const ids=shuffle(B.map((q,i)=>q.rep?i:-1).filter(i=>i>=0));return uniq(ids.sort((a,b)=>(B[b].rep-B[a].rep)||((a in st.r)-(b in st.r))))}
   const ids=B.map((q,i)=>sub==='all'||q.s===sub?i:-1).filter(i=>i>=0);
   return uniq([...shuffle(ids.filter(i=>!(i in st.r))),...shuffle(ids.filter(i=>st.r[i]===0)),...shuffle(ids.filter(i=>st.r[i]===1))])}
-function startRound(sub){if(sub[0]==='q'?!Object.keys(QB).length:!B.length)return toast('الأسئلة لسه تتحمّل…');const ids=pool(sub).slice(0,sub.startsWith('qs:استيعاب')?RN+2:RN);if(!ids.length)return toast('ما فيه أسئلة هنا');
+function startRound(sub){if(sub[0]==='q'?!Object.keys(QB).length:!B.length)return toast('الأسئلة لسه تتحمّل…');ev('round:'+sub);const ids=pool(sub).slice(0,sub.startsWith('qs:استيعاب')?RN+2:RN);if(!ids.length)return toast('ما فيه أسئلة هنا');
   R={sub,ids,i:0,res:[],combo:0,best:0,xp:0};show('round');drawQ()}
 function segs(){$('segs').innerHTML=R.ids.map((_,i)=>`<i class="${R.res[i]===true?'ok':R.res[i]===false?'bad':i===R.i?'cur':''}"></i>`).join('')}
 function drawQ(){const q=Q(R.ids[R.i]),pv=R.i&&Q(R.ids[R.i-1]);segs();$('combo').textContent=R.combo>1?'×'+R.combo:'';
   const sh=$('sheet');sh.classList.remove('on');document.body.append(sh);$('rbody').innerHTML=`<div class="qcard">${qHTML(q,R.i,!(pv&&pv.psg&&pv.psg===q.psg))}</div>`;$('rbody').firstChild.append(sh);
   $('rbody').querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.k))}
-function pick(k){const id=R.ids[R.i],q=Q(id),ok=k===q.a;const bs=[...$('rbody').querySelectorAll('.opt')];
+function pick(k){const id=R.ids[R.i],q=Q(id),ok=k===q.a;ev('ans:'+(q.s||'x'));if(ok)ev('ok:'+(q.s||'x'));const bs=[...$('rbody').querySelectorAll('.opt')];
   bs.forEach(b=>b.disabled=true);bs[k].classList.add('pick');
   setTimeout(()=>{bs[q.a].classList.add('ok');if(!ok)bs[k].classList.add('bad');bs.forEach((b,j)=>{if(j!==q.a&&j!==k)b.classList.add('dim')})},120);
   R.combo=ok?R.combo+1:0;R.best=Math.max(R.best,R.combo);const bonus=ok&&R.combo>2?5:0;R.xp+=ok?10+bonus:0;R.res[R.i]=ok;R.last={id,k};
@@ -556,7 +556,7 @@ function openSheet(ok,q,k){const sh=$('sheet');sh.style.setProperty('--sc',ok?'v
 $('shNext').onclick=()=>{$('sheet').classList.remove('on');if(R.i<R.ids.length-1){R.i++;drawQ();window.scrollTo(0,0)}else endRound();maybeAskReg()};
 $('shExp').onclick=()=>explain(Q(R.last.id),R.last.k,$('shAI'),$('shExp'));
 $('quit').onclick=()=>{$('sheet').classList.remove('on');const back=R&&R.sub[0]==='q'?'qud':'home';R=null;show(back)};
-function endRound(){const n=R.res.filter(Boolean).length;segs();const sh=$('sheet');sh.classList.remove('on');document.body.append(sh);
+function endRound(){const n=R.res.filter(Boolean).length;ev('end:'+R.sub);segs();const sh=$('sheet');sh.classList.remove('on');document.body.append(sh);
   $('rbody').innerHTML=`<div class="res"><div class="big disp">${n}/${R.ids.length}</div><p class="disp" style="font-size:26px;margin:6px 0">${(p=>p>=.9?'أسطورة! جولة شبه كاملة':p>=.7?'شغل نظيف، كمّل كذا':p>=.4?'زين، والتكرار يثبّت':'عادي، كل غلطة تعلّمك شي')(n/R.ids.length)}</p>
    <div class="stats3"><div class="stat"><b>+${R.xp}</b><span>كوينز</span></div><div class="stat"><b>${R.best}</b><span>أطول سلسلة صح</span></div><div class="stat"><b>${dayCount()}/${GOAL}</b><span>هدف اليوم</span></div></div>
    <div class="row2"><button class="cta" id="again">جولة ثانية</button><button class="cta ghost" id="home2">${R.sub[0]==='q'?'القدرات':'الرئيسية'}</button></div></div>`;
@@ -588,7 +588,7 @@ function drawTestStart(){T.on=false;clearInterval(T.iv);let ts='all';
   <div class="chips">${[['all','كل المواد','var(--ink)'],['freq','الأكثر تكراراً','var(--chem)'],...Object.keys(SUB).map(k=>[k,SUB[k].n,SUB[k].c])].map(([k,t,c])=>`<button class="chip" data-s="${k}" style="--c:${c}" aria-pressed="${k==='all'}">${t}</button>`).join('')}</div>
   <button class="cta w" id="tgo">ابدأ الاختبار</button></div>`;
   $('tbody').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ts=c.dataset.s;$('tbody').querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===c))});
-  $('tgo').onclick=()=>{if(!B.length)return toast('الأسئلة لسه تتحمّل…');Object.assign(T,{on:true,ids:pool(ts).slice(0,TN),i:0,end:Date.now()+TMIN*6e4});T.ans=Array(T.ids.length).fill(-1);T.iv=setInterval(tick,1000);document.body.classList.add('inround');drawT()}}
+  $('tgo').onclick=()=>{if(!B.length)return toast('الأسئلة لسه تتحمّل…');ev('test:'+ts);Object.assign(T,{on:true,ids:pool(ts).slice(0,TN),i:0,end:Date.now()+TMIN*6e4});T.ans=Array(T.ids.length).fill(-1);T.iv=setInterval(tick,1000);document.body.classList.add('inround');drawT()}}
 function tick(){const r=Math.max(0,T.end-Date.now());const e=$('tclock');if(e)e.textContent=`${Math.floor(r/6e4)}:${String(Math.floor(r/1e3)%60).padStart(2,'0')}`;if(!r&&T.on)finishT()}
 function drawT(){const q=B[T.ids[T.i]],n=T.ids.length;
   $('tbody').innerHTML=`<div class="rtop"><button class="x" id="tq" aria-label="إلغاء الاختبار"><svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button><span style="flex:1;font-weight:600">باقي ${T.ans.filter(a=>a<0).length} سؤال</span><span class="timer" id="tclock"></span></div>
@@ -601,7 +601,7 @@ function drawT(){const q=B[T.ids[T.i]],n=T.ids.length;
   $('tp').onclick=()=>{T.i--;drawT()};$('tn').onclick=()=>{T.i++;drawT()};
   $('tq').onclick=()=>{if($('tq').dataset.c){clearInterval(T.iv);T.on=false;show('home')}else{$('tq').dataset.c=1;toast('اضغط مرة ثانية لإلغاء الاختبار')}};
   $('tf').onclick=()=>{const left=T.ans.filter(a=>a<0).length;if(left&&!$('tf').dataset.c){$('tf').dataset.c=1;$('tf').textContent=`باقي ${left} — سلّم؟`;return}finishT()}}
-function finishT(){clearInterval(T.iv);T.on=false;document.body.classList.remove('inround');let n=0;
+function finishT(){clearInterval(T.iv);T.on=false;ev('tend');document.body.classList.remove('inround');let n=0;
   T.ids.forEach((id,i)=>{const ok=T.ans[i]===B[id].a;if(ok)n++;if(T.ans[i]>-1)record(id,ok,0)});
   const pct=Math.round(n/T.ids.length*100);
   $('tbody').innerHTML=`<div class="res"><div class="big disp">${pct}٪</div><p class="disp" style="font-size:24px;margin:6px 0">${n} صح من ${T.ids.length}</p></div>
@@ -669,6 +669,16 @@ document.querySelectorAll('#qTiles .tile').forEach(t=>t.onclick=()=>startRound(t
 
 // ---------- coins & leaderboard
 let useSB=false;const inClaude=!!(window.claude&&claude.use);
+// usage counter (anonymous): a random device id + event names, sent in batches to /api/ev
+const EVQ=[];let evId='';try{evId=localStorage.getItem('mz-vid')||'';if(!evId){evId=(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)).toLowerCase();localStorage.setItem('mz-vid',evId)}}catch(e){}
+function ev(k){if(inClaude||!evId||!location.protocol.startsWith('http'))return;EVQ.push(String(k).slice(0,48));if(EVQ.length>=30)evFlush()}
+function evFlush(beacon){if(!EVQ.length||!evId)return;const body=JSON.stringify({v:evId,e:EVQ.splice(0,40)});
+  try{if(beacon&&navigator.sendBeacon){navigator.sendBeacon('/api/ev',new Blob([body],{type:'application/json'}));return}}catch(e){}
+  fetch('/api/ev',{method:'POST',headers:{'content-type':'application/json'},body,keepalive:true}).catch(()=>{})}
+setInterval(()=>evFlush(),15000);addEventListener('pagehide',()=>evFlush(true));document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')evFlush(true)});
+try{if(!sessionStorage.getItem('mz-ev')){sessionStorage.setItem('mz-ev','1');let r='direct';try{if(document.referrer){const h=new URL(document.referrer).hostname.replace(/^www\./,'');if(h&&h!==location.hostname)r=h.split('.').slice(-2).join('.')}}catch(e){}
+  const u=new URLSearchParams(location.search).get('src');if(u)r=u.replace(/[^\w.-]/g,'').slice(0,30)||r;
+  ev('visit');ev('ref:'+r);ev('dev:'+(matchMedia('(pointer:coarse)').matches?'m':'d'));ev(st.tok?'user:reg':(st.n?'user:back':'user:new'));setTimeout(()=>evFlush(),1500)}}catch(e){}
 async function rpc(fn,args){const get=args&&'q' in args;const r=await fetch('/api/'+fn+(get?args.q:''),get?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(args)});
   const j=await r.json().catch(()=>null);if(!r.ok||!j||!j.ok){const e=new Error((j&&j.error)||'net');e.code=(j&&j.error)||'net';throw e}return j}
 const COIN=`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="#ffd23f" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="6" fill="none" stroke="#b8860b" stroke-width="1.4"/></svg>`;
@@ -706,7 +716,7 @@ $('rBack').onclick=()=>show(prevV==='rank'?'start':prevV);
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)show(g.dataset.go)});
 // registration (once per student)
 const normPhone=p=>{let d=String(p).replace(/[٠-٩]/g,c=>'٠١٢٣٤٥٦٧٨٩'.indexOf(c)).replace(/\D/g,'');if(/^9665\d{8}$/.test(d))d='0'+d.slice(3);if(/^5\d{8}$/.test(d))d='0'+d;return d};
-function openReg(why){if(!useSB||st.tok)return;
+function openReg(why){if(!useSB||st.tok)return;ev('regp:'+(why||'x'));
   $('regT').textContent=why==='rank'?'ادخل الترتيب':st.xp>0?`عندك ${st.xp} كوينز، احفظها!`:'احفظ كوينزك';
   $('regD').textContent=why==='rank'?'سجّل اسمك مرة وحدة، ويطلع اسمك مع الطلاب في الترتيب.':'سجّل مرة وحدة بس، وكوينزك تنحفظ ويطلع اسمك في الترتيب. التسجيل اختياري.';
   $('reg').classList.add('on');if(st.nick&&!$('regN').value)$('regN').value=st.nick;setTimeout(()=>$('regN').focus(),50)}
@@ -721,7 +731,7 @@ $('regF').onsubmit=async e=>{e.preventDefault();const n=$('regN').value.trim().r
   if(n.length<2){E.textContent='اكتب اسمك (حرفين على الأقل).';$('regN').focus();return}
   if(!/^05\d{8}$/.test(p)){E.textContent='اكتب رقم جوال سعودي صحيح يبدأ بـ 05 (عشر أرقام).';$('regP').focus();return}
   const b=$('regB');b.disabled=true;b.textContent='لحظة…';
-  try{const r=await rpc('register',{name:n,phone:p,coins:st.xp});st.tok=r.token;st.nick=r.name;if((r.coins|0)>st.xp)st.xp=r.coins|0;save();lastSent=null;
+  try{const r=await rpc('register',{name:n,phone:p,coins:st.xp});ev(r.back?'reg:back':'reg:new');evFlush();st.tok=r.token;st.nick=r.name;if((r.coins|0)>st.xp)st.xp=r.coins|0;save();lastSent=null;
     closeReg();toast(r.back?'رجعنا لك حسابك، هلا فيك '+r.name:'انحفظت كوينزك، هلا '+r.name+'!');drawHome();queueSync();if(curV==='rank')drawRank()}
   catch(err){E.textContent=/PHONE_TAKEN/.test(err.code)?'الرقم مسجّل باسم ثاني. لو هو حسابك اكتب نفس الاسم اللي سجّلت فيه.':/BAD_PHONE/.test(err.code)?'رقم الجوال غير صحيح.':/BAD_NAME/.test(err.code)?'الاسم لازم يكون من 2 إلى 20 حرف.':'ما قدرت أوصل للسيرفر، تأكد من النت وجرّب مرة ثانية.'}
   b.disabled=false;b.textContent='سجّل واحفظ كوينزي'};
