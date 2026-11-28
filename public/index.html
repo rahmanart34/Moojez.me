@@ -757,7 +757,7 @@ $('goTah').onclick=()=>show('home');$('goQud').onclick=()=>show('qud');$('qBack'
 document.body.classList.add('onstart');
 drawHome();
 fetch('bank.json?v=040a9d73c8').then(r=>r.json()).then(d=>{B=d;$('tahN').textContent=fmtN(B.length)+' سؤال · مربوطة بكتب الوزارة';drawHome()}).catch(()=>toast('ما قدرت أحمّل الأسئلة، حدّث الصفحة'));
-fetch('qbank.json?v=662b059018').then(r=>r.json()).then(d=>{QB=d.Q;QP=d.P;$('qudN').textContent=fmtN(Object.keys(QB).length)+' سؤال · تجميعات كمي ولفظي';if(curV==='qud')drawQud()}).catch(()=>{});
+fetch('qbank.json?v=083e5ddd99').then(r=>r.json()).then(d=>{QB=d.Q;QP=d.P;$('qudN').textContent=fmtN(Object.keys(QB).length)+' سؤال · تجميعات كمي ولفظي';if(curV==='qud')drawQud()}).catch(()=>{});
 if(window.claude&&claude.use)claude.use('sample').then(async s=>{if(!s)return;ai=s;$('askb').disabled=false;$('v-coach').classList.remove('off');
   $('coachNote').textContent='اسأل عن أي درس أو مسألة في الأحياء، الكيمياء، الفيزياء، أو الرياضيات.';
   try{aiImg=!!(await s.limits()).images}catch(e){}}).catch(()=>{});
